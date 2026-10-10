@@ -88,6 +88,19 @@ async function loadPage(htmlFile, { slug } = {}) {
     await import(pathToFileURL(entry).href);
   }
   await new Promise((resolve) => setTimeout(resolve, 900));
+
+  // `.reveal` starts at opacity 0 and is only shown once an IntersectionObserver
+  // marks it. jsdom never applies that opacity, so a page can pass every content
+  // check while its sections are invisible in a real browser. The stub above
+  // records `observe()` calls in data-visible, making that wiring assertable.
+  const revealTotal = window.document.querySelectorAll('.reveal').length;
+  const revealHidden = window.document.querySelectorAll('.reveal:not([data-visible="true"])').length;
+  log(
+    revealTotal === 0 || revealHidden === 0,
+    `${htmlFile}: every .reveal is observed (nothing stuck invisible)`,
+    `${revealTotal - revealHidden}/${revealTotal}`,
+  );
+
   return window;
 }
 

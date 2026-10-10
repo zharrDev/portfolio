@@ -4,7 +4,7 @@
  * Every function returns a real DOM node built with the `el()` helper, so user
  * data is always inserted as text (never parsed as HTML).
  */
-import { Child, append, el } from '@/utils/dom';
+import { Child, append, el, observeReveals } from '@/utils/dom';
 import { icon, IconName } from '@/components/icons';
 import { statusLabel } from '@/utils/format';
 
@@ -381,6 +381,9 @@ export function asyncSection<T>(
     .then((data) => {
       container.textContent = '';
       append(container, render(data));
+      // Assembled after mount, so any `.reveal` inside needs observing here —
+      // otherwise it stays at opacity 0 and the content never shows.
+      observeReveals(container);
     })
     .catch((err: unknown) => {
       container.textContent = '';
