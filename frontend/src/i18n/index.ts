@@ -23,7 +23,6 @@ export const LOCALES: { code: Locale; label: string; short: string }[] = [
 ];
 
 const STORAGE_KEY = 'dzhar.locale';
-const FADE_KEY = 'dzhar.langFade';
 const SCROLL_KEY = 'dzhar.langScroll';
 
 const id = {
@@ -746,64 +745,13 @@ function crossfadeReload(): void {
     return;
   }
 
-  try {
-    window.sessionStorage.setItem(FADE_KEY, '1');
-  } catch {
-    // Non-fatal: the swap still happens, just without the flip back in.
-  }
-
   // Quick fade of the outgoing page. Deliberately *not* a flip: the incoming
   // side carries the flip, line by line, so reversing it would read as an
-  // undo. Reload happens once the fade has played.
+  // undo. Reload happens once the fade has played. The incoming load runs the
+  // same entrance reveal as any other load — no flag needed to tell them
+  // apart, so there is nothing extra to remember across the reload.
   document.documentElement.classList.add('lang-out');
   window.setTimeout(() => window.location.reload(), 175);
-}
-
-/**
- * Text units that take part in the language-swap reveal, in one selector so
- * the result is de-duplicated and in document order. Anything that owns the
- * `.reveal` class is skipped: the scroll-reveal system already controls its
- * opacity, and the two would fight over it.
- */
-const LANG_LINE_SELECTOR = [
-  '#site-header .brand',
-  '#site-header .site-nav__link',
-  '.hero__name',
-  '.hero__title > span',
-  '.hero__title > em',
-  '.hero__lede',
-  '.hero__cta > *',
-  '.hero__facts > *',
-  '.page-head__eyebrow',
-  '.page-head__title',
-  '.page-head__lede',
-  '.section-head__title > *',
-  '.resume__section-title',
-  'footer .brand',
-  '.footer-meta',
-].join(', ');
-
-/**
- * Flips each text unit up from below into place, staggered a beat apart.
- * Runs only on the load that follows a language switch; the class and index
- * are cleared afterwards so later transitions start from a clean state.
- */
-function animateLanguageLines(): void {
-  const units = Array.from(document.querySelectorAll<HTMLElement>(LANG_LINE_SELECTOR)).filter(
-    (node) => !node.classList.contains('reveal') && !node.closest('[hidden]'),
-  );
-
-  units.forEach((node, index) => {
-    node.style.setProperty('--lang-i', String(Math.min(index, 22)));
-    node.classList.add('lang-line');
-  });
-
-  window.setTimeout(() => {
-    for (const node of units) {
-      node.classList.remove('lang-line');
-      node.style.removeProperty('--lang-i');
-    }
-  }, 1700);
 }
 
 /** Applies the locale to the document once the DOM is ready. */
@@ -811,20 +759,16 @@ export function initI18n(): void {
   const root = document.documentElement;
   root.lang = current;
 
-  // A pending fade-in / scroll restore from the language switch.
-  let pendingFade = false;
+  // Scroll position to restore after the reload that follows a language
+  // switch — a reload snaps to the top, which is jarring when the switch
+  // happens in the middle of a long page.
   let restoreScroll = 0;
   try {
-    pendingFade = window.sessionStorage.getItem(FADE_KEY) === '1';
-    if (pendingFade) window.sessionStorage.removeItem(FADE_KEY);
     restoreScroll = Number(window.sessionStorage.getItem(SCROLL_KEY) ?? '0') || 0;
     if (restoreScroll) window.sessionStorage.removeItem(SCROLL_KEY);
   } catch {
-    pendingFade = false;
     restoreScroll = 0;
   }
-
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (restoreScroll > 0) {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
@@ -832,10 +776,6 @@ export function initI18n(): void {
     // Once now, once after `load` — async sections grow the page in between.
     window.requestAnimationFrame(restore);
     window.addEventListener('load', restore, { once: true });
-  }
-
-  if (pendingFade && !reduced) {
-    animateLanguageLines();
   }
 
   const title = qs('title');

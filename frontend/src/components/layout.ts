@@ -6,6 +6,7 @@
  * them so the markup stays in HTML while the behaviour lives in TypeScript.
  */
 import { el, markRevealSections, observeReveals, qs } from '@/utils/dom';
+import { playEntrance } from '@/utils/entrance';
 import { icon } from '@/components/icons';
 import { api } from '@/api/client';
 import { isSafeUrl } from '@/utils/format';
@@ -262,4 +263,9 @@ export function mountPublicLayout(): void {
   // Animate the static furniture on scroll, then observe everything.
   markRevealSections();
   observeReveals();
+
+  // Entrance reveal, once per load — refresh, page navigation and the reload
+  // after a language switch all come through here. Runs last so the header
+  // and footer lines that were just mounted are part of the sequence.
+  playEntrance();
 }

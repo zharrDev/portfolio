@@ -269,32 +269,36 @@
   .stagger > * { animation: none; }
 }
 
-/* --- Language switch transition ---
-   The outgoing page fades (never flips backwards), and the incoming page
-   reveals its text line by line: each caption/heading/lead flips up from
-   below into place, staggered by `--lang-i`. The i18n runtime tags the
-   elements and clears the class once the run finishes. */
+/* --- Language switch: outgoing fade ---
+   The page fades out quickly before the reload. Deliberately *not* a flip:
+   the incoming page carries the entrance reveal, line by line, so reversing
+   it here would read as an undo. */
 html.lang-out body {
   opacity: 0;
   transition: opacity 160ms ease-in;
 }
 
-.lang-line {
+/* --- Entrance reveal ---
+   Every load plays it (first visit, refresh, page navigation, language
+   switch): text units flip up from below into place, staggered a beat apart
+   by `--enter-i`. The entrance module tags the elements and clears the class
+   once the run finishes. */
+.enter-line {
   transform-origin: 50% 100%;
   backface-visibility: hidden;
   will-change: transform, opacity;
-  animation: lang-line-in 620ms var(--ease-out) both;
-  animation-delay: calc(var(--lang-i, 0) * 62ms);
+  animation: enter-line-in 620ms var(--ease-out) both;
+  animation-delay: calc(var(--enter-i, 0) * 62ms);
 }
 
-@keyframes lang-line-in {
+@keyframes enter-line-in {
   from { opacity: 0; transform: perspective(760px) rotateX(-78deg) translateY(0.42em); }
   to { opacity: 1; transform: perspective(760px) rotateX(0deg) translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html.lang-out body { opacity: 1; transition: none; }
-  .lang-line { animation: none; }
+  .enter-line { animation: none; }
 }
 
 /* --- Scroll progress ---
