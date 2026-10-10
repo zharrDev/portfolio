@@ -4,7 +4,7 @@
  * Describing the shape as data (rather than bespoke forms per resource) lets a
  * single generic editor render every resource while remaining fully typed.
  */
-import { SKILL_CATEGORY_LABEL, SKILL_CATEGORY_ORDER, statusLabel } from '@/utils/format';
+import { skillCategoryLabel, SKILL_CATEGORY_ORDER, statusLabel } from '@/utils/format';
 
 export type FieldType = 'text' | 'textarea' | 'number' | 'url' | 'checkbox' | 'select' | 'tags' | 'lines' | 'date';
 
@@ -88,7 +88,7 @@ export const RESOURCES: Record<string, ResourceDef> = {
     description: 'Daftar teknologi, dikelompokkan per kategori.',
     columns: [
       { key: 'name', label: 'Nama' },
-      { key: 'category', label: 'Kategori', format: (r) => SKILL_CATEGORY_LABEL[String(r.category)] ?? String(r.category) },
+      { key: 'category', label: 'Kategori', format: (r) => skillCategoryLabel(String(r.category)) },
       { key: 'sort_order', label: 'Urutan' },
     ],
     fields: [
@@ -98,7 +98,7 @@ export const RESOURCES: Record<string, ResourceDef> = {
         label: 'Kategori',
         type: 'select',
         required: true,
-        options: SKILL_CATEGORY_ORDER.map((c) => ({ value: c, label: SKILL_CATEGORY_LABEL[c] })),
+        options: SKILL_CATEGORY_ORDER.map((c) => ({ value: c, label: skillCategoryLabel(c) })),
       },
       { name: 'note', label: 'Catatan (opsional)', type: 'text', full: true },
       { name: 'sort_order', label: 'Urutan', type: 'number' },

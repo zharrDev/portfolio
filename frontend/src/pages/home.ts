@@ -4,7 +4,8 @@ import { mountPublicLayout } from '@/components/layout';
 import { emptyState, mountAsync, projectCardSkeleton, reveal } from '@/components/ui';
 import { projectCard } from '@/components/project-card';
 import { api } from '@/api/client';
-import { SKILL_CATEGORY_LABEL, SKILL_CATEGORY_ORDER } from '@/utils/format';
+import { skillCategoryLabel, SKILL_CATEGORY_ORDER } from '@/utils/format';
+import { t } from '@/i18n';
 import type { Education, Profile, Project, Skill } from '@/types';
 
 function mountHero(): void {
@@ -77,7 +78,7 @@ function mountSkills(): void {
             el(
               'div',
               { class: 'card' },
-              el('h3', { class: 'skill-group__title' }, SKILL_CATEGORY_LABEL[group.category] ?? group.category),
+              el('h3', { class: 'skill-group__title' }, skillCategoryLabel(group.category)),
               el(
                 'div',
                 { class: 'skill-list' },
@@ -112,7 +113,7 @@ function mountFeaturedProjects(): void {
     () => api.getProjects({ featured: true, per_page: 3, sort: 'recent' }).then((r) => r.data),
     (projects) => {
       if (projects.length === 0) {
-        return emptyState('Belum ada proyek unggulan', 'Proyek unggulan dapat dipilih melalui dashboard admin.');
+        return emptyState(t('home.emptyFeatured'), t('home.emptyFeaturedHint'));
       }
       const grid = el('div', { class: 'grid grid--3' });
       projects.forEach((project, index) => {
@@ -140,7 +141,7 @@ function mountEducation(): void {
       }
       return el(
         'div',
-        { class: 'timeline' },
+        { class: 'timeline stagger' },
         educations.map((edu, index) =>
           reveal(
             el(

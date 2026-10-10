@@ -95,6 +95,14 @@
   border-bottom-color: var(--line);
 }
 
+/* Compact-on-scroll. Scaling the mark instead of changing the header height
+   keeps the sticky box measurement stable, so nothing reflows mid-scroll. */
+.brand { transition: transform var(--dur) var(--ease-out); transform-origin: left center; }
+.site-header[data-scrolled='true'] .brand { transform: scale(0.94); }
+@media (prefers-reduced-motion: reduce) {
+  .brand { transition: none; }
+}
+
 .site-header__inner {
   display: flex;
   align-items: center;

@@ -1,17 +1,27 @@
-const MONTHS_ID = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+import { getLocale, t, type StringKey } from '@/i18n';
+
+/** Calendar abbreviations per locale. */
+const MONTHS: Record<string, string[]> = {
+  id: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+  en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+};
+
+function months(): string[] {
+  return MONTHS[getLocale()] ?? MONTHS.id;
+}
 
 export function formatDate(value: string | null | undefined): string {
   if (!value) return '—';
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return '—';
-  return `${d.getDate()} ${MONTHS_ID[d.getMonth()]} ${d.getFullYear()}`;
+  return `${d.getDate()} ${months()[d.getMonth()]} ${d.getFullYear()}`;
 }
 
 export function formatMonthYear(value: string | null | undefined): string {
   if (!value) return '—';
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return value;
-  return `${MONTHS_ID[d.getMonth()]} ${d.getFullYear()}`;
+  return `${months()[d.getMonth()]} ${d.getFullYear()}`;
 }
 
 export function relativeTime(value: string | null | undefined): string {
@@ -20,15 +30,15 @@ export function relativeTime(value: string | null | undefined): string {
   if (Number.isNaN(d)) return '—';
   const diff = Date.now() - d;
   const mins = Math.round(diff / 60000);
-  if (mins < 1) return 'baru saja';
-  if (mins < 60) return `${mins} menit lalu`;
+  if (mins < 1) return t('time.justNow');
+  if (mins < 60) return t('time.minutesAgo', { n: mins });
   const hours = Math.round(mins / 60);
-  if (hours < 24) return `${hours} jam lalu`;
+  if (hours < 24) return t('time.hoursAgo', { n: hours });
   const days = Math.round(hours / 24);
-  if (days < 30) return `${days} hari lalu`;
-  const months = Math.round(days / 30);
-  if (months < 12) return `${months} bulan lalu`;
-  return `${Math.round(months / 12)} tahun lalu`;
+  if (days < 30) return t('time.daysAgo', { n: days });
+  const monthsAgo = Math.round(days / 30);
+  if (monthsAgo < 12) return t('time.monthsAgo', { n: monthsAgo });
+  return t('time.yearsAgo', { n: Math.round(monthsAgo / 12) });
 }
 
 export function initials(value: string): string {
@@ -40,27 +50,34 @@ export function initials(value: string): string {
     .join('');
 }
 
-const STATUS_LABEL: Record<string, string> = {
-  completed: 'Selesai',
-  in_progress: 'Sedang dikembangkan',
-  prototype: 'Prototipe',
-  archived: 'Diarsipkan',
-  planned: 'Direncanakan',
+const STATUS_KEY: Record<string, StringKey> = {
+  completed: 'status.completed',
+  in_progress: 'status.in_progress',
+  prototype: 'status.prototype',
+  archived: 'status.archived',
+  planned: 'status.planned',
 };
 
 export function statusLabel(status: string): string {
-  return STATUS_LABEL[status] ?? status;
+  const key = STATUS_KEY[status];
+  return key ? t(key) : status;
 }
 
-export const SKILL_CATEGORY_LABEL: Record<string, string> = {
-  programming_languages: 'Programming Languages',
-  frontend: 'Frontend Development',
-  backend: 'Backend Development',
-  database: 'Database',
-  tools: 'Developer Tools',
-  operating_systems: 'Operating Systems',
-  other: 'Other Technologies',
+const CATEGORY_KEY: Record<string, StringKey> = {
+  programming_languages: 'category.programming_languages',
+  frontend: 'category.frontend',
+  backend: 'category.backend',
+  database: 'category.database',
+  tools: 'category.tools',
+  operating_systems: 'category.operating_systems',
+  other: 'category.other',
 };
+
+/** Translated heading for a skill category, falling back to the raw value. */
+export function skillCategoryLabel(category: string): string {
+  const key = CATEGORY_KEY[category];
+  return key ? t(key) : category;
+}
 
 export const SKILL_CATEGORY_ORDER: string[] = [
   'programming_languages',

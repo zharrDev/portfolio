@@ -7,6 +7,7 @@
 import { Child, append, el, observeReveals } from '@/utils/dom';
 import { icon, IconName } from '@/components/icons';
 import { statusLabel } from '@/utils/format';
+import { t } from '@/i18n';
 
 /* ------------------------------------------------------------------ */
 /* Buttons                                                             */
@@ -173,17 +174,16 @@ export function toast(kind: 'success' | 'error' | 'info', message: string): void
     'div',
     { class: `notice notice--${kind}`, style: 'box-shadow: var(--shadow-md); background: var(--bg-elev-2)' },
     icon(kind === 'success' ? 'check' : 'alert-circle', { size: 18 }),
-    el('span', { style: 'flex:1; color: var(--fg)' }, message),
-    el(
-      'button',
-      {
-        type: 'button',
-        class: 'btn btn--icon btn--ghost btn--sm',
-        'aria-label': 'Tutup notifikasi',
-        onClick: () => node.remove(),
-      },
-      icon('x', { size: 15 }),
-    ),
+    el('span', { style: 'flex:1; color: var(--fg)' }, message),      el(
+        'button',
+        {
+          type: 'button',
+          class: 'btn btn--icon btn--ghost btn--sm',
+          'aria-label': t('a11y.closeNotification'),
+          onClick: () => node.remove(),
+        },
+        icon('x', { size: 15 }),
+      ),
   );
   region.appendChild(node);
   setTimeout(() => node.remove(), 5200);
@@ -304,7 +304,7 @@ export function openLightbox(images: LightboxImage[], startIndex: number): void 
     class: 'lightbox',
     role: 'dialog',
     'aria-modal': 'true',
-    'aria-label': 'Pratinjau gambar',
+    'aria-label': t('lightbox.title'),
   });
 
   const close = () => {
@@ -336,15 +336,15 @@ export function openLightbox(images: LightboxImage[], startIndex: number): void 
   }
 
   overlay.appendChild(
-    button('', { variant: 'ghost', class: 'lightbox__close', ariaLabel: 'Tutup pratinjau', icon: 'x', onClick: close }),
+    button('', { variant: 'ghost', class: 'lightbox__close', ariaLabel: t('lightbox.close'), icon: 'x', onClick: close }),
   );
 
   if (images.length > 1) {
     overlay.appendChild(
-      button('', { variant: 'ghost', class: 'lightbox__nav lightbox__nav--prev', ariaLabel: 'Sebelumnya', icon: 'arrow-left', onClick: (e) => { e.stopPropagation(); goTo(index - 1); } }),
+      button('', { variant: 'ghost', class: 'lightbox__nav lightbox__nav--prev', ariaLabel: t('lightbox.prev'), icon: 'arrow-left', onClick: (e) => { e.stopPropagation(); goTo(index - 1); } }),
     );
     overlay.appendChild(
-      button('', { variant: 'ghost', class: 'lightbox__nav lightbox__nav--next', ariaLabel: 'Berikutnya', icon: 'arrow-right', onClick: (e) => { e.stopPropagation(); goTo(index + 1); } }),
+      button('', { variant: 'ghost', class: 'lightbox__nav lightbox__nav--next', ariaLabel: t('lightbox.next'), icon: 'arrow-right', onClick: (e) => { e.stopPropagation(); goTo(index + 1); } }),
     );
   }
 
@@ -373,7 +373,7 @@ export function asyncSection<T>(
 ): HTMLElement {
   const container = el('div');
   const showLoading = options.loading ?? (() => skeleton('200px'));
-  const showError = options.error ?? ((message: string) => emptyState('Gagal memuat data', message));
+  const showError = options.error ?? ((message: string) => emptyState(t('state.loadFailed'), message));
 
   append(container, showLoading());
 
@@ -387,7 +387,7 @@ export function asyncSection<T>(
     })
     .catch((err: unknown) => {
       container.textContent = '';
-      const message = err instanceof Error ? err.message : 'Terjadi kesalahan.';
+      const message = err instanceof Error ? err.message : t('state.error');
       append(container, showError(message));
     });
 

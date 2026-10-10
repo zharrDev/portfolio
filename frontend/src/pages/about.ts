@@ -3,7 +3,7 @@ import { el, onReady, qs } from '@/utils/dom';
 import { mountPublicLayout } from '@/components/layout';
 import { emptyState, mountAsync, tag } from '@/components/ui';
 import { api } from '@/api/client';
-import { formatMonthYear, isSafeUrl, SKILL_CATEGORY_LABEL, SKILL_CATEGORY_ORDER } from '@/utils/format';
+import { formatMonthYear, isSafeUrl, skillCategoryLabel, SKILL_CATEGORY_ORDER } from '@/utils/format';
 import type { Certificate, Education, Experience, Profile, Skill } from '@/types';
 
 function mountPortrait(): void {
@@ -101,7 +101,7 @@ function mountSkills(): void {
           return el(
             'div',
             {},
-            el('div', { class: 'mono text-dim', style: 'margin-bottom: var(--sp-3)' }, SKILL_CATEGORY_LABEL[category]),
+            el('div', { class: 'mono text-dim', style: 'margin-bottom: var(--sp-3)' }, skillCategoryLabel(category)),
             el('div', { class: 'skill-list' }, items.map((s) => el('span', { class: 'skill-chip' }, s.name))),
           );
         }),

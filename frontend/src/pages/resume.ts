@@ -3,7 +3,7 @@ import { el, onReady, qs } from '@/utils/dom';
 import { mountPublicLayout } from '@/components/layout';
 import { emptyState, mountAsync } from '@/components/ui';
 import { api } from '@/api/client';
-import { formatMonthYear, isSafeUrl, SKILL_CATEGORY_LABEL, SKILL_CATEGORY_ORDER } from '@/utils/format';
+import { formatMonthYear, isSafeUrl, skillCategoryLabel, SKILL_CATEGORY_ORDER } from '@/utils/format';
 import type { Certificate, Education, Experience, Profile, Project, Skill } from '@/types';
 
 function wirePrint(): void {
@@ -150,7 +150,7 @@ function mountSkills(): void {
           el(
             'div',
             { class: 'print-block' },
-            el('div', { class: 'mono text-dim', style: 'margin-bottom: var(--sp-3)' }, SKILL_CATEGORY_LABEL[group.category]),
+            el('div', { class: 'mono text-dim', style: 'margin-bottom: var(--sp-3)' }, skillCategoryLabel(group.category)),
             el('div', { class: 'row', style: 'gap: var(--sp-2)' }, group.items.map((s) => el('span', { class: 'tag' }, s.name))),
           ),
         ),

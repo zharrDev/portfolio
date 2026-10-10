@@ -23,6 +23,8 @@ import type {
   SocialLink,
 } from '@/types';
 
+import { localeParam } from '@/i18n';
+
 const RAW_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? '/api/v1';
 export const API_BASE = RAW_BASE.replace(/\/$/, '');
 
@@ -55,11 +57,19 @@ export interface ApiResult<T> {
 
 function buildUrl(path: string, query?: Query): string {
   const url = API_BASE + path;
-  if (!query) return url;
   const params = new URLSearchParams();
-  for (const [key, value] of Object.entries(query)) {
-    if (value !== undefined && value !== '') params.set(key, String(value));
+
+  // The active locale rides on every request so the backend can return the
+  // translated columns. Admin endpoints ignore it and return both languages,
+  // which is what the edit forms need.
+  params.set('locale', localeParam());
+
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== '') params.set(key, String(value));
+    }
   }
+
   const qs = params.toString();
   return qs ? `${url}?${qs}` : url;
 }

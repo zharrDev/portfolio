@@ -239,6 +239,42 @@
   .reveal { opacity: 1; transform: none; }
 }
 
+/* --- Staggered lists ---
+   Children of a grid/list fade up in sequence. The delay is capped so long
+   lists do not make the last item feel laggy, and it is driven by CSS custom
+   properties so nothing is measured in JavaScript. */
+.stagger > * { animation: item-in var(--dur-slow) var(--ease-out) backwards; }
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 45ms; }
+.stagger > *:nth-child(3) { animation-delay: 90ms; }
+.stagger > *:nth-child(4) { animation-delay: 135ms; }
+.stagger > *:nth-child(5) { animation-delay: 180ms; }
+.stagger > *:nth-child(n + 6) { animation-delay: 225ms; }
+@keyframes item-in { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: reduce) {
+  .stagger > * { animation: none; }
+}
+
+/* --- Language switch transition ---
+   `data-lang-fade` is written by the i18n runtime: hidden while the page
+   swaps locale, then shown so the new language arrives with a fade rather
+   than a hard cut. */
+html[data-lang-fade] body { opacity: 0; }
+html[data-lang-fade='shown'] body { opacity: 1; transition: opacity 220ms var(--ease-out); }
+@media (prefers-reduced-motion: reduce) {
+  html[data-lang-fade] body,
+  html[data-lang-fade='shown'] body { opacity: 1; transition: none; }
+}
+
+/* --- Language toggle --- */
+.lang-switch { display: inline-flex; align-items: center; gap: 2px; padding: 2px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-inset); }
+.lang-switch__btn { appearance: none; border: 0; background: transparent; color: var(--fg-dim); font: inherit; font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.04em; padding: 0.28rem 0.55rem; border-radius: 999px; cursor: pointer; transition: background var(--dur-fast), color var(--dur-fast); }
+.lang-switch__btn:hover { color: var(--fg); }
+.lang-switch__btn[aria-current='true'] { background: var(--accent); color: var(--bg); }
+@media (prefers-reduced-motion: reduce) {
+  .lang-switch__btn { transition: none; }
+}
+
 /* --- Lightbox --- */
 .lightbox {
   position: fixed; inset: 0; z-index: 200;
