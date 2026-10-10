@@ -227,16 +227,18 @@
 }
 .empty-state__icon { color: var(--fg-dim); }
 
-/* --- Reveal on scroll --- */
+/* --- Reveal on scroll ---
+   Only opacity/transform so the compositor can drive it, and no permanent
+   `will-change`: a page can hold dozens of `.reveal` nodes, and a standing
+   layer hint on each one costs GPU memory long after the transition ends. */
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translate3d(0, 18px, 0);
   transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
-  will-change: opacity, transform;
 }
-.reveal[data-visible='true'] { opacity: 1; transform: none; }
+.reveal[data-visible='true'] { opacity: 1; transform: translate3d(0, 0, 0); }
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
 }
 
 /* --- Staggered lists ---
@@ -256,14 +258,42 @@
 }
 
 /* --- Language switch transition ---
-   `data-lang-fade` is written by the i18n runtime: hidden while the page
-   swaps locale, then shown so the new language arrives with a fade rather
-   than a hard cut. */
-html[data-lang-fade] body { opacity: 0; }
-html[data-lang-fade='shown'] body { opacity: 1; transition: opacity 220ms var(--ease-out); }
+   A fixed veil fades over the page before the reload and fades out on the
+   next load. Being its own composited layer, it never forces a repaint of the
+   whole document the way animating `body` opacity would. */
+.lang-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms var(--ease-out);
+}
+.lang-veil.is-on { opacity: 1; pointer-events: auto; }
 @media (prefers-reduced-motion: reduce) {
-  html[data-lang-fade] body,
-  html[data-lang-fade='shown'] body { opacity: 1; transition: none; }
+  .lang-veil { transition: none; }
+}
+
+/* --- Scroll progress ---
+   A single composited bar in the header, driven by one passive scroll listener
+   in layout.ts. `scaleX` keeps the update off the layout/paint path. */
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.scroll-progress__bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  will-change: transform;
 }
 
 /* --- Language toggle --- */

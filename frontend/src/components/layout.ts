@@ -116,6 +116,9 @@ export function renderHeader(): HTMLElement {
     icon('menu', { size: 20 }),
   );
 
+  const progressBar = el('span', { class: 'scroll-progress__bar' });
+  const progress = el('div', { class: 'scroll-progress', 'aria-hidden': 'true' }, progressBar);
+
   const header = el(
     'header',
     { class: 'site-header', id: 'site-header-bar' },
@@ -136,12 +139,28 @@ export function renderHeader(): HTMLElement {
       languageSwitch(),
       toggle,
     ),
+    progress,
   );
 
-  // Sticky-header visual state on scroll.
-  const onScroll = () => header.setAttribute('data-scrolled', String(window.scrollY > 12));
-  onScroll();
+  // Sticky-header state and reading progress share one passive listener,
+  // coalesced into a single rAF so scroll never does more than one layout
+  // read per frame — and only when a frame is actually available.
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    header.setAttribute('data-scrolled', String(window.scrollY > 12));
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const ratio = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+    progressBar.style.transform = `scaleX(${ratio})`;
+  };
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  };
+  update();
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
 
   return header;
 }

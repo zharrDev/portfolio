@@ -15,6 +15,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* In-page anchors land below the sticky header instead of under it. */
+  scroll-padding-top: calc(var(--header-h) + var(--sp-3));
 }
 
 @media (prefers-reduced-motion: reduce) {

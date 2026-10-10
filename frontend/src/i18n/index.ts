@@ -24,6 +24,7 @@ export const LOCALES: { code: Locale; label: string; short: string }[] = [
 
 const STORAGE_KEY = 'dzhar.locale';
 const FADE_KEY = 'dzhar.langFade';
+const SCROLL_KEY = 'dzhar.langScroll';
 
 const id = {
   /* --- chrome --- */
@@ -731,7 +732,14 @@ export function setLocale(next: Locale): void {
  */
 function crossfadeReload(): void {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const root = document.documentElement;
+
+  // Remember where the reader is: a reload snaps to the top, which is jarring
+  // when the switch happens in the middle of a long page. Restored in initI18n.
+  try {
+    window.sessionStorage.setItem(SCROLL_KEY, String(window.scrollY));
+  } catch {
+    // Non-fatal: worst case the page reloads at the top.
+  }
 
   if (reduced) {
     window.location.reload();
@@ -744,12 +752,14 @@ function crossfadeReload(): void {
     // Non-fatal: the swap still happens, just without the fade back in.
   }
 
-  // Start from the hidden state so the fade-out is actually animated.
-  root.removeAttribute('data-lang-fade');
-  void document.body.offsetHeight; // flush style so the next change transitions
-  root.setAttribute('data-lang-fade', 'hidden');
+  // A dedicated veil rather than animating `body`: it composites on its own
+  // layer, so the fade never repaints the whole document frame by frame.
+  const veil = document.createElement('div');
+  veil.className = 'lang-veil';
+  document.documentElement.appendChild(veil);
+  window.requestAnimationFrame(() => veil.classList.add('is-on'));
 
-  window.setTimeout(() => window.location.reload(), 180);
+  window.setTimeout(() => window.location.reload(), 220);
 }
 
 /** Applies the locale to the document once the DOM is ready. */
@@ -757,20 +767,38 @@ export function initI18n(): void {
   const root = document.documentElement;
   root.lang = current;
 
-  // A pending fade-in from the language switch. Applied before paint so the
-  // new language is revealed with a transition instead of popping in.
+  // A pending fade-in / scroll restore from the language switch.
   let pendingFade = false;
+  let restoreScroll = 0;
   try {
     pendingFade = window.sessionStorage.getItem(FADE_KEY) === '1';
     if (pendingFade) window.sessionStorage.removeItem(FADE_KEY);
+    restoreScroll = Number(window.sessionStorage.getItem(SCROLL_KEY) ?? '0') || 0;
+    if (restoreScroll) window.sessionStorage.removeItem(SCROLL_KEY);
   } catch {
     pendingFade = false;
+    restoreScroll = 0;
   }
 
-  if (pendingFade && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    root.setAttribute('data-lang-fade', 'hidden');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (restoreScroll > 0) {
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+    const restore = () => window.scrollTo({ top: restoreScroll, behavior: 'auto' });
+    // Once now, once after `load` — async sections grow the page in between.
+    window.requestAnimationFrame(restore);
+    window.addEventListener('load', restore, { once: true });
+  }
+
+  if (pendingFade && !reduced) {
+    const veil = document.createElement('div');
+    veil.className = 'lang-veil is-on';
+    document.documentElement.appendChild(veil);
     window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => root.setAttribute('data-lang-fade', 'shown'));
+      window.requestAnimationFrame(() => {
+        veil.classList.remove('is-on');
+        window.setTimeout(() => veil.remove(), 260);
+      });
     });
   }
 
