@@ -4,6 +4,7 @@ import { mountPublicLayout } from '@/components/layout';
 import { emptyState, mountAsync } from '@/components/ui';
 import { api } from '@/api/client';
 import { formatMonthYear, isSafeUrl, skillCategoryLabel, SKILL_CATEGORY_ORDER } from '@/utils/format';
+import { t } from '@/i18n';
 import type { Certificate, Education, Experience, Profile, Project, Skill } from '@/types';
 
 function wirePrint(): void {
@@ -24,8 +25,8 @@ function mountHeader(): void {
 
       const contact = qs('#resume-contact');
       if (!contact) return;
-      if (data.email) contact.appendChild(el('span', { class: 'mono text-dim' }, `✉ ${data.email}`));
-      if (data.location) contact.appendChild(el('span', { class: 'mono text-dim' }, `⌖ ${data.location}`));
+      if (data.email) contact.appendChild(el('span', { class: 'mono text-dim', title: t('resume.contact.email') }, `✉ ${data.email}`));
+      if (data.location) contact.appendChild(el('span', { class: 'mono text-dim', title: t('resume.contact.location') }, `⌖ ${data.location}`));
       contact.appendChild(
         el(
           'a',
@@ -67,7 +68,7 @@ function mountEducation(): void {
     host,
     () => api.getEducation().then((r) => r.data),
     (educations) => {
-      if (educations.length === 0) return emptyState('Belum ada data pendidikan', 'Tambahkan melalui dashboard admin.');
+      if (educations.length === 0) return emptyState(t('resume.empty.education'), t('resume.empty.addViaAdmin'));
       return el(
         'div',
         {},
@@ -75,7 +76,7 @@ function mountEducation(): void {
           el(
             'div',
             { class: 'resume-item print-block' },
-            el('div', { class: 'resume-item__period' }, `${edu.start_year ?? '—'} — ${edu.end_year ?? 'Sekarang'}`),
+            el('div', { class: 'resume-item__period' }, `${edu.start_year ?? '—'} — ${edu.end_year ?? t('common.present')}`),
             el(
               'div',
               {},
@@ -113,7 +114,7 @@ function mountExperience(): void {
             el(
               'div',
               { class: 'resume-item__period' },
-              `${item.start_date ? formatMonthYear(item.start_date) : '—'} — ${item.end_date ? formatMonthYear(item.end_date) : 'Sekarang'}`,
+              `${item.start_date ? formatMonthYear(item.start_date) : '—'} — ${item.end_date ? formatMonthYear(item.end_date) : t('common.present')}`,
             ),
             el(
               'div',
@@ -142,7 +143,7 @@ function mountSkills(): void {
         items: skills.filter((s) => s.category === category),
       })).filter((g) => g.items.length > 0);
 
-      if (groups.length === 0) return emptyState('Belum ada data skill');
+      if (groups.length === 0) return emptyState(t('resume.empty.skills'));
       return el(
         'div',
         { class: 'stack stack-5' },
@@ -167,7 +168,7 @@ function mountProjects(): void {
     host,
     () => api.getProjects({ featured: true, per_page: 6, sort: 'recent' }).then((r) => r.data),
     (projects) => {
-      if (projects.length === 0) return emptyState('Belum ada proyek unggulan');
+      if (projects.length === 0) return emptyState(t('resume.noProjects'));
       return el(
         'div',
         {},
@@ -187,7 +188,7 @@ function mountProjects(): void {
                   ? el(
                       'a',
                       { class: 'mono', style: 'color: var(--accent); font-size: var(--text-xs); margin-left: var(--sp-3)', href: project.repository_url as string, target: '_blank', rel: 'noopener noreferrer' },
-                      'repo ↗',
+                      t('resume.repoLink'),
                     )
                   : null,
               ),

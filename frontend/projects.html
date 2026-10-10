@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#060910" />
-    <title>Proyek — Dzhar.dev</title>
+    <title data-i18n-title="meta.title.projects">Proyek — Dzhar.dev</title>
     <meta
       name="description"
       content="Kumpulan proyek dan repository Izhar 'Dzhar' Harahap: aplikasi web, backend Go, sistem akuntansi, dan eksperimen teknologi."
@@ -25,14 +25,14 @@
     />
   </head>
   <body>
-    <a class="skip-link" href="#main">Lompat ke konten utama</a>
+    <a class="skip-link" href="#main" data-i18n="skip.link">Lompat ke konten utama</a>
     <div id="site-header"></div>
 
     <main id="main" class="container page">
       <div class="page-head">
-        <span class="mono page-head__eyebrow">Project showcase</span>
-        <h1 class="page-head__title">Karya &amp; eksperimen</h1>
-        <p class="page-head__lede">
+        <span class="mono page-head__eyebrow" data-i18n="projects.page.eyebrow">Project showcase</span>
+        <h1 class="page-head__title" data-i18n="projects.page.title">Karya &amp; eksperimen</h1>
+        <p class="page-head__lede" data-i18n="projects.page.lede">
           Setiap proyek di bawah dikurasi dari database portfolio dan dapat ditautkan ke repository
           GitHub-nya. Gunakan pencarian dan filter untuk menelusuri berdasarkan bahasa, kategori, atau status.
         </p>
@@ -40,7 +40,7 @@
 
       <form class="filters" role="search" id="project-filters" novalidate>
         <div class="field">
-          <label class="field__label" for="project-search">Cari proyek</label>
+          <label class="field__label" for="project-search" data-i18n="projects.page.searchLabel">Cari proyek</label>
           <div class="input-icon">
             <span aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
@@ -48,49 +48,49 @@
                 <path d="m21 21-4.3-4.3" />
               </svg>
             </span>
-            <input id="project-search" class="input" type="search" placeholder="Nama, deskripsi, teknologi…" autocomplete="off" />
+            <input id="project-search" class="input" type="search" autocomplete="off" placeholder="Nama, deskripsi, teknologi…" data-i18n-attr='{"placeholder":"projects.page.searchPlaceholder"}' />
           </div>
         </div>
         <div class="field">
-          <label class="field__label" for="filter-language">Bahasa</label>
-          <select id="filter-language" class="select"><option value="">Semua</option></select>
+          <label class="field__label" for="filter-language" data-i18n="projects.filterLanguage">Bahasa</label>
+          <select id="filter-language" class="select"><option value="" data-i18n="projects.page.all">Semua</option></select>
         </div>
         <div class="field">
-          <label class="field__label" for="filter-category">Kategori</label>
-          <select id="filter-category" class="select"><option value="">Semua</option></select>
+          <label class="field__label" for="filter-category" data-i18n="projects.page.category">Kategori</label>
+          <select id="filter-category" class="select"><option value="" data-i18n="projects.page.all">Semua</option></select>
         </div>
         <div class="field">
-          <label class="field__label" for="filter-status">Status</label>
+          <label class="field__label" for="filter-status" data-i18n="projects.page.status">Status</label>
           <select id="filter-status" class="select">
-            <option value="">Semua</option>
-            <option value="completed">Selesai</option>
-            <option value="in_progress">Sedang dikembangkan</option>
-            <option value="prototype">Prototipe</option>
-            <option value="archived">Diarsipkan</option>
-            <option value="planned">Direncanakan</option>
+            <option value="" data-i18n="projects.page.all">Semua</option>
+            <option value="completed" data-i18n="status.completed">Selesai</option>
+            <option value="in_progress" data-i18n="status.in_progress">Sedang dikembangkan</option>
+            <option value="prototype" data-i18n="status.prototype">Prototipe</option>
+            <option value="archived" data-i18n="status.archived">Diarsipkan</option>
+            <option value="planned" data-i18n="status.planned">Direncanakan</option>
           </select>
         </div>
         <div class="field">
-          <label class="field__label" for="filter-sort">Urutkan</label>
+          <label class="field__label" for="filter-sort" data-i18n="projects.page.sort">Urutkan</label>
           <select id="filter-sort" class="select">
-            <option value="recent">Terbaru</option>
-            <option value="oldest">Terlama</option>
-            <option value="title">Judul (A–Z)</option>
-            <option value="featured">Featured dulu</option>
+            <option value="recent" data-i18n="projects.page.sortRecent">Terbaru</option>
+            <option value="oldest" data-i18n="projects.page.sortOldest">Terlama</option>
+            <option value="title" data-i18n="projects.page.sortTitle">Judul (A–Z)</option>
+            <option value="featured" data-i18n="projects.page.sortFeatured">Featured dulu</option>
           </select>
         </div>
         <div class="filters__toggle">
           <label class="switch">
             <input type="checkbox" id="filter-featured" />
             <span class="switch__track" aria-hidden="true"></span>
-            Featured saja
+            <span data-i18n="projects.page.featuredOnly">Featured saja</span>
           </label>
         </div>
       </form>
 
       <div class="results-bar">
         <span class="mono text-dim" id="results-count">Memuat…</span>
-        <button type="button" class="btn btn--ghost btn--sm" id="reset-filters" hidden>Reset filter</button>
+        <button type="button" class="btn btn--ghost btn--sm" id="reset-filters" data-i18n="projects.reset" hidden>Reset filter</button>
       </div>
 
       <div id="projects-grid"></div>
@@ -98,10 +98,10 @@
       <section class="section section--tight">
         <div class="section-head">
           <div class="section-head__title">
-            <span class="mono section-eyebrow">Repositori publik</span>
-            <h2>Repository lain dari GitHub</h2>
+            <span class="mono section-eyebrow" data-i18n="projects.reposEyebrow">Repositori publik</span>
+            <h2 data-i18n="projects.otherRepos">Repository lain dari GitHub</h2>
           </div>
-          <button type="button" class="btn btn--ghost btn--sm" id="toggle-repos" aria-expanded="false">
+          <button type="button" class="btn btn--ghost btn--sm" id="toggle-repos" data-i18n="action.show" aria-expanded="false">
             Tampilkan
           </button>
         </div>

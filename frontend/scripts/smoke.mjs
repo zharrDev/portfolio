@@ -77,7 +77,16 @@ async function loadPage(htmlFile, { slug } = {}) {
     'Node', 'Element', 'HTMLElement', 'HTMLInputElement', 'SVGElement',
     'Event', 'CustomEvent', 'MutationObserver', 'IntersectionObserver', 'matchMedia',
   ]) {
-    if (window[key] !== undefined) globalThis[key] = window[key];
+    if (window[key] === undefined) continue;
+    // Node 22 defines some of these (e.g. `navigator`) as getter-only
+    // globals, so a plain assignment throws. defineProperty overrides them.
+    try {
+      Object.defineProperty(globalThis, key, {
+        value: window[key], configurable: true, writable: true,
+      });
+    } catch {
+      globalThis[key] = window[key];
+    }
   }
   globalThis.IntersectionObserver = window.IntersectionObserver;
   globalThis.matchMedia = window.matchMedia;

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#060910" />
-    <title>CV / Resume — Dzhar.dev</title>
+    <title data-i18n-title="meta.title.resume">CV / Resume — Dzhar.dev</title>
     <meta
       name="description"
       content="Curriculum Vitae Izhar 'Dzhar' Harahap — profil, pendidikan, keahlian, dan proyek unggulan."
@@ -24,13 +24,13 @@
     />
   </head>
   <body>
-    <a class="skip-link" href="#main">Lompat ke konten utama</a>
+    <a class="skip-link" href="#main" data-i18n="skip.link">Lompat ke konten utama</a>
     <div id="site-header"></div>
 
     <main id="main" class="container page resume">
       <header class="resume__header">
         <div>
-          <span class="mono page-head__eyebrow no-print">Curriculum Vitae</span>
+          <span class="mono page-head__eyebrow no-print" data-i18n="resume.eyebrow">Curriculum Vitae</span>
           <h1 style="font-size: var(--text-3xl)" id="resume-name">Izhar Harahap</h1>
           <p class="text-muted" style="font-size: var(--text-lg)" id="resume-headline">
             Backend &amp; Web Developer · Accounting Student
@@ -39,38 +39,38 @@
         </div>
 
         <div class="row no-print">
-          <button type="button" class="btn btn--primary" id="print-cv">Cetak / Simpan PDF</button>
-          <button type="button" class="btn btn--ghost" id="download-cv">Unduh CV</button>
+          <button type="button" class="btn btn--primary" id="print-cv" data-i18n="action.printCv">Cetak / Simpan PDF</button>
+          <button type="button" class="btn btn--ghost" id="download-cv" data-i18n="action.downloadCv">Unduh CV</button>
         </div>
       </header>
 
       <section class="resume__section print-block" id="resume-summary-section">
-        <h2 class="resume__section-title">Ringkasan profesional</h2>
+        <h2 class="resume__section-title" data-i18n="resume.page.summary">Ringkasan profesional</h2>
         <div id="resume-summary"></div>
       </section>
 
       <section class="resume__section print-block">
-        <h2 class="resume__section-title">Pendidikan</h2>
+        <h2 class="resume__section-title" data-i18n="resume.education">Pendidikan</h2>
         <div id="resume-education"></div>
       </section>
 
       <section class="resume__section print-block" id="resume-experience-section" hidden>
-        <h2 class="resume__section-title">Pengalaman</h2>
+        <h2 class="resume__section-title" data-i18n="resume.experience">Pengalaman</h2>
         <div id="resume-experience"></div>
       </section>
 
       <section class="resume__section print-block">
-        <h2 class="resume__section-title">Keahlian</h2>
+        <h2 class="resume__section-title" data-i18n="resume.skills">Keahlian</h2>
         <div id="resume-skills"></div>
       </section>
 
       <section class="resume__section print-block">
-        <h2 class="resume__section-title">Featured projects</h2>
+        <h2 class="resume__section-title" data-i18n="resume.page.featuredProjects">Proyek pilihan</h2>
         <div id="resume-projects"></div>
       </section>
 
       <section class="resume__section print-block" id="resume-certificates-section" hidden>
-        <h2 class="resume__section-title">Sertifikat</h2>
+        <h2 class="resume__section-title" data-i18n="resume.certificates">Sertifikat</h2>
         <div id="resume-certificates"></div>
       </section>
 
@@ -79,13 +79,13 @@
         style="margin-top: var(--sp-8); display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); flex-wrap: wrap"
       >
         <div>
-          <h3 style="font-size: var(--text-lg)">Butuh versi PDF?</h3>
-          <p class="text-muted" style="font-size: var(--text-sm); margin-top: var(--sp-2)">
+          <h3 style="font-size: var(--text-lg)" data-i18n="resume.pdfTitle">Butuh versi PDF?</h3>
+          <p class="text-muted" style="font-size: var(--text-sm); margin-top: var(--sp-2)" data-i18n="resume.pdfHint">
             Gunakan tombol cetak — dialog cetak browser memungkinkan menyimpan halaman sebagai PDF
             dengan stylesheet cetak khusus (layout rapi, tanpa navigasi).
           </p>
         </div>
-        <button type="button" class="btn btn--primary" id="download-cv-2">Unduh CV PDF</button>
+        <button type="button" class="btn btn--primary" id="download-cv-2" data-i18n="action.downloadPdf">Unduh CV PDF</button>
       </div>
     </main>
 

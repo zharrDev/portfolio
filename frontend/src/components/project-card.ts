@@ -2,13 +2,14 @@ import { el } from '@/utils/dom';
 import { icon } from '@/components/icons';
 import { statusBadge, tag } from '@/components/ui';
 import { initials, isSafeUrl } from '@/utils/format';
+import { t } from '@/i18n';
 import type { Project } from '@/types';
 
 function cover(project: Project): HTMLElement {
   if (project.cover_image && isSafeUrl(project.cover_image)) {
     return el('img', {
       src: project.cover_image,
-      alt: `Pratinjau ${project.title}`,
+      alt: t('card.coverAlt', { title: project.title }),
       loading: 'lazy',
       decoding: 'async',
       width: '640',
@@ -29,7 +30,7 @@ export function projectCard(project: Project): HTMLElement {
         'a',
         { class: 'project-card__link', href: project.repository_url as string, target: '_blank', rel: 'noopener noreferrer' },
         icon('github', { size: 14 }),
-        'Source',
+        t('card.source'),
       ),
     );
   }
@@ -39,18 +40,18 @@ export function projectCard(project: Project): HTMLElement {
         'a',
         { class: 'project-card__link', href: project.live_demo_url as string, target: '_blank', rel: 'noopener noreferrer' },
         icon('external-link', { size: 14 }),
-        'Live demo',
+        t('card.demo'),
       ),
     );
   }
   if (typeof project.stars === 'number' && project.stars > 0) {
     links.appendChild(
-      el('span', { class: 'project-card__link', 'aria-label': `${project.stars} bintang` }, icon('star', { size: 14 }), String(project.stars)),
+      el('span', { class: 'project-card__link', 'aria-label': t('card.stars', { count: project.stars }) }, icon('star', { size: 14 }), String(project.stars)),
     );
   }
 
   const thumbMeta = el('div', { class: 'project-card__thumb-meta' });
-  if (project.is_featured) thumbMeta.appendChild(tag('Featured', true));
+  if (project.is_featured) thumbMeta.appendChild(tag(t('card.featured'), true));
   if (project.year) thumbMeta.appendChild(tag(String(project.year)));
 
   const tech = el('div', { class: 'project-card__tech' });
@@ -63,7 +64,7 @@ export function projectCard(project: Project): HTMLElement {
     { class: 'project-card' },
     el(
       'a',
-      { class: 'project-card__thumb', href: detailHref, 'aria-label': `Buka detail ${project.title}` },
+      { class: 'project-card__thumb', href: detailHref, 'aria-label': t('card.openDetail', { title: project.title }) },
       thumbMeta,
       cover(project),
     ),

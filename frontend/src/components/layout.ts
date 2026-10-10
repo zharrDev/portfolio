@@ -75,7 +75,7 @@ function isCurrent(item: NavItem): boolean {
 }
 
 export function renderHeader(): HTMLElement {
-  const nav = el('nav', { class: 'site-nav', 'aria-label': 'Navigasi utama', id: 'primary-nav' });
+  const nav = el('nav', { class: 'site-nav', 'aria-label': t('nav.primary'), id: 'primary-nav' });
 
   for (const item of NAV) {
     nav.appendChild(
@@ -124,7 +124,7 @@ export function renderHeader(): HTMLElement {
       { class: 'container site-header__inner' },
       el(
         'a',
-        { class: 'brand', href: '/index.html', 'aria-label': 'Dzhar.dev — beranda' },
+        { class: 'brand', href: '/index.html', 'aria-label': t('brand.home') },
         el(
           'span',
           { class: 'brand__mark', 'aria-hidden': 'true' },

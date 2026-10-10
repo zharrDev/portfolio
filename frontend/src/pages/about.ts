@@ -4,6 +4,7 @@ import { mountPublicLayout } from '@/components/layout';
 import { emptyState, mountAsync, tag } from '@/components/ui';
 import { api } from '@/api/client';
 import { formatMonthYear, isSafeUrl, skillCategoryLabel, SKILL_CATEGORY_ORDER } from '@/utils/format';
+import { t } from '@/i18n';
 import type { Certificate, Education, Experience, Profile, Skill } from '@/types';
 
 function mountPortrait(): void {
@@ -17,8 +18,8 @@ function mountPortrait(): void {
           el(
             'div',
             { class: 'portrait__placeholder' },
-            el('span', { class: 'mono' }, 'Foto profil'),
-            el('span', { style: 'font-size: var(--text-xs)' }, 'Dapat diunggah melalui dashboard admin'),
+            el('span', { class: 'mono' }, t('about.photo')),
+            el('span', { style: 'font-size: var(--text-xs)' }, t('about.photoHint')),
           ),
           host.firstChild,
         );
@@ -41,12 +42,12 @@ function mountFacts(): void {
     () => api.getProfile().then((r) => r.data),
     (profile) => {
       const rows: [string, string | null][] = [
-        ['Nama', profile.full_name],
-        ['Panggilan', profile.nickname],
-        ['Pendidikan', [profile.university, profile.major].filter(Boolean).join(' · ') || null],
-        ['Sebelumnya', [profile.previous_school, profile.previous_major].filter(Boolean).join(' · ') || null],
-        ['Lokasi', profile.location],
-        ['Fokus saat ini', profile.current_focus],
+        [t('about.fact.name'), profile.full_name],
+        [t('about.fact.nickname'), profile.nickname],
+        [t('about.fact.education'), [profile.university, profile.major].filter(Boolean).join(' · ') || null],
+        [t('about.fact.previous'), [profile.previous_school, profile.previous_major].filter(Boolean).join(' · ') || null],
+        [t('about.fact.location'), profile.location],
+        [t('about.fact.focus'), profile.current_focus],
       ];
       return el(
         'dl',
@@ -69,7 +70,7 @@ function mountProse(): void {
     () => api.getProfile().then((r) => r.data),
     (profile) => {
       if (!profile.about) {
-        return emptyState('Cerita profil belum diisi', 'Bagian ini dapat diisi melalui dashboard admin → Profile.');
+        return emptyState(t('about.noStory'), t('about.noStoryHint'));
       }
       return el(
         'div',
@@ -118,7 +119,7 @@ function mountEducation(): void {
     host,
     () => api.getEducation().then((r) => r.data),
     (educations) => {
-      if (educations.length === 0) return emptyState('Belum ada data pendidikan');
+      if (educations.length === 0) return emptyState(t('about.empty.education'));
       return el(
         'div',
         { class: 'timeline' },
@@ -127,7 +128,7 @@ function mountEducation(): void {
             'div',
             { class: 'timeline__item', 'data-current': index === 0 ? 'true' : undefined },
             el('span', { class: 'timeline__marker', 'aria-hidden': 'true' }),
-            el('div', { class: 'mono timeline__period' }, `${edu.start_year ?? '—'} — ${edu.end_year ?? 'Sekarang'}`),
+            el('div', { class: 'mono timeline__period' }, `${edu.start_year ?? '—'} — ${edu.end_year ?? t('common.present')}`),
             el('h3', { class: 'timeline__title' }, edu.institution),
             el('p', { class: 'timeline__sub' }, [edu.degree, edu.major].filter(Boolean).join(' · ') || '—'),
             edu.description ? el('p', { class: 'timeline__desc' }, edu.description) : null,
@@ -161,7 +162,7 @@ function mountExperience(): void {
             el(
               'div',
               { class: 'resume-item__period' },
-              `${item.start_date ? formatMonthYear(item.start_date) : '—'} — ${item.end_date ? formatMonthYear(item.end_date) : 'Sekarang'}`,
+              `${item.start_date ? formatMonthYear(item.start_date) : '—'} — ${item.end_date ? formatMonthYear(item.end_date) : t('common.present')}`,
             ),
             el(
               'div',
@@ -204,7 +205,7 @@ function mountCertificates(): void {
               ? el(
                   'a',
                   { class: 'btn btn--link btn--sm', style: 'margin-top: var(--sp-3)', href: cert.credential_url as string, target: '_blank', rel: 'noopener noreferrer' },
-                  'Lihat kredensial',
+                  t('about.viewCredential'),
                 )
               : null,
           ),

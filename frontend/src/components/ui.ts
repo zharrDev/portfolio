@@ -7,7 +7,7 @@
 import { Child, append, el, observeReveals } from '@/utils/dom';
 import { icon, IconName } from '@/components/icons';
 import { statusLabel } from '@/utils/format';
-import { t } from '@/i18n';
+import { t, translateTree } from '@/i18n';
 
 /* ------------------------------------------------------------------ */
 /* Buttons                                                             */
@@ -317,7 +317,7 @@ export function openLightbox(images: LightboxImage[], startIndex: number): void 
     const current = images[index];
     figure.textContent = '';
     figure.appendChild(
-      el('img', { class: 'lightbox__img', src: current.url, alt: current.caption || 'Pratinjau proyek' }),
+      el('img', { class: 'lightbox__img', src: current.url, alt: current.caption || t('lightbox.imageAlt') }),
     );
     if (current.caption) {
       figure.appendChild(el('figcaption', { class: 'lightbox__caption' }, current.caption));
@@ -384,6 +384,9 @@ export function asyncSection<T>(
       // Assembled after mount, so any `.reveal` inside needs observing here —
       // otherwise it stays at opacity 0 and the content never shows.
       observeReveals(container);
+      // ...and any `data-i18n` inside was written in the wrong language by
+      // default, so it is translated here rather than at page init.
+      translateTree(container);
     })
     .catch((err: unknown) => {
       container.textContent = '';

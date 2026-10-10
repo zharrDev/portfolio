@@ -5,6 +5,7 @@ import { emptyState, mountAsync, projectCardSkeleton, tag } from '@/components/u
 import { projectCard } from '@/components/project-card';
 import { api } from '@/api/client';
 import { isSafeUrl, relativeTime } from '@/utils/format';
+import { t } from '@/i18n';
 import type { GithubRepo, Project } from '@/types';
 
 interface FilterState {
@@ -70,17 +71,15 @@ function renderGrid(): void {
   const filtered = applyFilters();
   const hasFilters = Boolean(state.search || state.language || state.category || state.status || state.featuredOnly);
 
-  if (count) count.textContent = `${filtered.length} proyek ditemukan`;
+  if (count) count.textContent = t('projects.resultsFound', { count: filtered.length });
   if (resetButton) resetButton.hidden = !hasFilters;
 
   host.textContent = '';
   if (filtered.length === 0) {
     host.appendChild(
       emptyState(
-        hasFilters ? 'Tidak ada proyek yang cocok' : 'Belum ada proyek',
-        hasFilters
-          ? 'Coba ubah kata kunci atau reset filter untuk melihat semua proyek.'
-          : 'Proyek dapat ditambahkan melalui dashboard admin atau disinkronkan dari GitHub.',
+        hasFilters ? t('projects.empty') : t('projects.emptyNone'),
+        hasFilters ? t('projects.emptyHint') : t('projects.emptyNoneHint'),
       ),
     );
     return;
@@ -153,11 +152,11 @@ function repoRow(repo: GithubRepo): HTMLElement {
 
   const links = el('div', { class: 'row', style: 'margin-top: var(--sp-4)' });
   links.appendChild(
-    el('a', { class: 'btn btn--ghost btn--sm', href: repo.html_url, target: '_blank', rel: 'noopener noreferrer' }, 'Repository'),
+    el('a', { class: 'btn btn--ghost btn--sm', href: repo.html_url, target: '_blank', rel: 'noopener noreferrer' }, t('label.repository')),
   );
   if (isSafeUrl(repo.homepage)) {
     links.appendChild(
-      el('a', { class: 'btn btn--ghost btn--sm', href: repo.homepage as string, target: '_blank', rel: 'noopener noreferrer' }, 'Live demo'),
+      el('a', { class: 'btn btn--ghost btn--sm', href: repo.homepage as string, target: '_blank', rel: 'noopener noreferrer' }, t('label.liveDemo')),
     );
   }
 
@@ -172,7 +171,7 @@ function repoRow(repo: GithubRepo): HTMLElement {
     ),
     repo.description
       ? el('p', { class: 'text-muted', style: 'font-size: var(--text-sm); margin-top: var(--sp-3)' }, repo.description)
-      : el('p', { class: 'text-dim', style: 'font-size: var(--text-sm); margin-top: var(--sp-3)' }, 'Tanpa deskripsi.'),
+      : el('p', { class: 'text-dim', style: 'font-size: var(--text-sm); margin-top: var(--sp-3)' }, t('projects.noDescription')),
     repo.topics.length > 0 ? topics : null,
     el(
       'div',
@@ -180,7 +179,7 @@ function repoRow(repo: GithubRepo): HTMLElement {
       el('span', { class: 'mono text-dim' }, `★ ${repo.stargazers_count}`),
       el('span', { class: 'mono text-dim' }, `⑂ ${repo.forks_count}`),
       el('span', { class: 'mono text-dim' }, repo.updated_at ? relativeTime(repo.updated_at) : '—'),
-      repo.is_imported ? tag('Di portfolio', true) : null,
+      repo.is_imported ? tag(t('projects.imported'), true) : null,
     ),
     links,
   );
@@ -197,7 +196,7 @@ function mountRepos(): void {
     const show = host.hidden;
     host.hidden = !show;
     toggle.setAttribute('aria-expanded', String(show));
-    toggle.textContent = show ? 'Sembunyikan' : 'Tampilkan';
+    toggle.textContent = show ? t('action.hide') : t('action.show');
 
     if (!show || loaded) return;
     loaded = true;
@@ -208,7 +207,7 @@ function mountRepos(): void {
       (repos) => {
         const others = repos.filter((r) => !r.is_imported);
         if (others.length === 0) {
-          return emptyState('Tidak ada repository lain', 'Semua repository publik sudah tampil di portfolio.');
+          return emptyState(t('projects.noOtherRepos'), t('projects.noOtherReposHint'));
         }
         return el(
           'div',
@@ -216,7 +215,7 @@ function mountRepos(): void {
           el(
             'p',
             { class: 'mono text-dim', style: 'margin-bottom: var(--sp-5)' },
-            'Diambil dari GitHub API melalui backend, dengan caching dan fallback database.',
+            t('projects.reposNote'),
           ),
           el('div', { class: 'grid grid--2' }, others.map(repoRow)),
         );
@@ -249,9 +248,9 @@ onReady(() => {
       if (!host) return;
       host.textContent = '';
       host.appendChild(
-        emptyState('Gagal memuat proyek', err instanceof Error ? err.message : 'Terjadi kesalahan.'),
+        emptyState(t('projects.loadFailed'), err instanceof Error ? err.message : t('state.error')),
       );
       const count = qs('#results-count');
-      if (count) count.textContent = 'Gagal memuat';
+      if (count) count.textContent = t('projects.loadFailed');
     });
 });

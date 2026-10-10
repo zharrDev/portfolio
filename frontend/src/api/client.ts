@@ -23,7 +23,7 @@ import type {
   SocialLink,
 } from '@/types';
 
-import { localeParam } from '@/i18n';
+import { localeParam, t } from '@/i18n';
 
 const RAW_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? '/api/v1';
 export const API_BASE = RAW_BASE.replace(/\/$/, '');
@@ -34,7 +34,7 @@ export class ApiError extends Error {
   readonly details?: Record<string, string>;
 
   constructor(status: number, body: ApiErrorBody | null) {
-    super(body?.error?.message || `Request gagal (${status})`);
+    super(body?.error?.message || t('state.requestFailed', { status }));
     this.name = 'ApiError';
     this.status = status;
     this.code = body?.error?.code || 'unknown_error';
@@ -87,7 +87,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<A
     });
   } catch {
     throw new ApiError(0, {
-      error: { code: 'network_error', message: 'Tidak dapat terhubung ke server.' },
+      error: { code: 'network_error', message: t('state.offline') },
     });
   }
 

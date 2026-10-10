@@ -1,6 +1,7 @@
 import { el, qs } from '@/utils/dom';
 import { button, notice, textAreaField, textField } from '@/components/ui';
 import { api, ApiError } from '@/api/client';
+import { t } from '@/i18n';
 import type { ContactPayload } from '@/types';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -17,19 +18,19 @@ type Errors = Partial<Record<keyof Values, string>>;
 
 function validate(values: Values): Errors {
   const errors: Errors = {};
-  if (!values.name.trim()) errors.name = 'Nama wajib diisi.';
-  else if (values.name.trim().length < 2) errors.name = 'Nama minimal 2 karakter.';
-  else if (values.name.length > 100) errors.name = 'Nama maksimal 100 karakter.';
+  if (!values.name.trim()) errors.name = t('contact.error.name');
+  else if (values.name.trim().length < 2) errors.name = t('contact.error.nameShort');
+  else if (values.name.length > 100) errors.name = t('contact.error.nameLong');
 
-  if (!values.email.trim()) errors.email = 'Email wajib diisi.';
-  else if (!EMAIL_RE.test(values.email.trim())) errors.email = 'Format email tidak valid.';
+  if (!values.email.trim()) errors.email = t('contact.error.email');
+  else if (!EMAIL_RE.test(values.email.trim())) errors.email = t('contact.error.emailInvalid');
 
-  if (!values.subject.trim()) errors.subject = 'Subjek wajib diisi.';
-  else if (values.subject.length > 150) errors.subject = 'Subjek maksimal 150 karakter.';
+  if (!values.subject.trim()) errors.subject = t('contact.error.subject');
+  else if (values.subject.length > 150) errors.subject = t('contact.error.subjectLong');
 
-  if (!values.message.trim()) errors.message = 'Pesan wajib diisi.';
-  else if (values.message.trim().length < 10) errors.message = 'Pesan minimal 10 karakter.';
-  else if (values.message.length > 5000) errors.message = 'Pesan maksimal 5000 karakter.';
+  if (!values.message.trim()) errors.message = t('contact.error.message');
+  else if (values.message.trim().length < 10) errors.message = t('contact.error.messageShort');
+  else if (values.message.length > 5000) errors.message = t('contact.error.messageLong');
 
   return errors;
 }
@@ -40,12 +41,12 @@ export function contactForm(): HTMLFormElement {
 
   const fieldsHost = el('div', { class: 'editor__grid' });
   const statusHost = el('div');
-  const submitButton = button('Kirim pesan', { variant: 'primary', type: 'submit' });
+  const submitButton = button(t('contact.send'), { variant: 'primary', type: 'submit' });
 
-  const nameField = textField({ label: 'Nama', name: 'name', autoComplete: 'name', required: true });
-  const emailField = textField({ label: 'Email', name: 'email', type: 'email', autoComplete: 'email', required: true });
-  const subjectField = textField({ label: 'Subjek', name: 'subject', required: true, full: true });
-  const messageField = textAreaField({ label: 'Pesan', name: 'message', required: true, full: true, rows: 7 });
+  const nameField = textField({ label: t('contact.name'), name: 'name', autoComplete: 'name', required: true });
+  const emailField = textField({ label: t('contact.email'), name: 'email', type: 'email', autoComplete: 'email', required: true });
+  const subjectField = textField({ label: t('contact.subject'), name: 'subject', required: true, full: true });
+  const messageField = textAreaField({ label: t('contact.message'), name: 'message', required: true, full: true, rows: 7 });
 
   fieldsHost.append(nameField, emailField, subjectField, messageField);
 
@@ -65,7 +66,7 @@ export function contactForm(): HTMLFormElement {
     el(
       'div',
       { class: 'row', style: 'justify-content: space-between' },
-      el('span', { class: 'field__hint' }, 'Pesan disimpan di database. Tidak ada data yang dibagikan ke pihak ketiga.'),
+      el('span', { class: 'field__hint' }, t('contact.privacyNote')),
       submitButton,
     ),
   );
@@ -137,7 +138,7 @@ export function contactForm(): HTMLFormElement {
 
     statusHost.textContent = '';
     submitButton.disabled = true;
-    submitButton.textContent = 'Mengirim…';
+    submitButton.textContent = t('contact.sending');
 
     const payload: ContactPayload = {
       name: values.name.trim(),
@@ -152,7 +153,7 @@ export function contactForm(): HTMLFormElement {
       .then(() => {
         statusHost.textContent = '';
         statusHost.appendChild(
-          notice('success', 'Terima kasih! Pesanmu sudah tersimpan dan akan dibaca secepatnya.'),
+          notice('success', t('contact.sent')),
         );
         form.reset();
         values.name = '';
@@ -163,16 +164,16 @@ export function contactForm(): HTMLFormElement {
         showErrors();
       })
       .catch((err: unknown) => {
-        let message = 'Gagal mengirim pesan.';
+        let message = t('contact.failed');
         if (err instanceof ApiError) {
-          message = err.status === 429 ? 'Terlalu banyak percobaan. Coba lagi beberapa saat lagi.' : err.message;
+          message = err.status === 429 ? t('contact.rateLimited') : err.message;
         }
         statusHost.textContent = '';
         statusHost.appendChild(notice('error', message));
       })
       .finally(() => {
         submitButton.disabled = false;
-        submitButton.textContent = 'Kirim pesan';
+        submitButton.textContent = t('contact.send');
       });
   });
 

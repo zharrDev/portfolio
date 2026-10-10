@@ -4,6 +4,7 @@ import { mountPublicLayout } from '@/components/layout';
 import { emptyState, linkButton, openLightbox, skeleton, statusBadge, tag } from '@/components/ui';
 import { api } from '@/api/client';
 import { formatDate, initials, isSafeUrl, queryParam, relativeTime } from '@/utils/format';
+import { t } from '@/i18n';
 import type { Project } from '@/types';
 
 function block(title: string, content: Child): HTMLElement | null {
@@ -51,13 +52,13 @@ function pager(all: Project[], current: Project): HTMLElement | null {
     el(
       'a',
       { class: 'pager__link', href: `/project-detail.html?slug=${encodeURIComponent(prev.slug)}` },
-      el('span', { class: 'mono text-dim' }, '← Sebelumnya'),
+      el('span', { class: 'mono text-dim' }, `← ${t('detail.prev')}`),
       el('span', { style: 'font-size: var(--text-lg)' }, prev.title),
     ),
     el(
       'a',
       { class: 'pager__link pager__link--next', href: `/project-detail.html?slug=${encodeURIComponent(next.slug)}` },
-      el('span', { class: 'mono text-dim' }, 'Berikutnya →'),
+      el('span', { class: 'mono text-dim' }, `${t('detail.next')} →`),
       el('span', { style: 'font-size: var(--text-lg)' }, next.title),
     ),
   );
@@ -73,35 +74,35 @@ function renderDetail(project: Project, all: Project[]): void {
   const galleryImages = project.images.filter((img) => isSafeUrl(img.image_url));
 
   const actions = el('div', { class: 'row' });
-  if (hasRepo) actions.appendChild(linkButton('View source', project.repository_url as string, { variant: 'ghost', icon: 'github', external: true }));
-  if (hasDemo) actions.appendChild(linkButton('Live demo', project.live_demo_url as string, { variant: 'primary', icon: 'external-link', external: true }));
+  if (hasRepo) actions.appendChild(linkButton(t('action.viewRepo'), project.repository_url as string, { variant: 'ghost', icon: 'github', external: true }));
+  if (hasDemo) actions.appendChild(linkButton(t('action.viewDemo'), project.live_demo_url as string, { variant: 'primary', icon: 'external-link', external: true }));
 
   const meta = el(
     'dl',
     { class: 'detail-meta' },
-    el('div', {}, el('dt', { class: 'hero__fact-label' }, 'Bahasa'), el('dd', { class: 'hero__fact-value' }, project.language ?? '—')),
-    el('div', {}, el('dt', { class: 'hero__fact-label' }, 'Status'), el('dd', { class: 'hero__fact-value' }, project.status)),
+    el('div', {}, el('dt', { class: 'hero__fact-label' }, t('detail.facts.language')), el('dd', { class: 'hero__fact-value' }, project.language ?? '—')),
+    el('div', {}, el('dt', { class: 'hero__fact-label' }, t('detail.facts.status')), el('dd', { class: 'hero__fact-value' }, project.status)),
     el(
       'div',
       {},
-      el('dt', { class: 'hero__fact-label' }, 'Diperbarui'),
+      el('dt', { class: 'hero__fact-label' }, t('detail.facts.updated')),
       el('dd', { class: 'hero__fact-value' }, project.github_updated_at ? relativeTime(project.github_updated_at) : formatDate(project.updated_at)),
     ),
     typeof project.stars === 'number'
-      ? el('div', {}, el('dt', { class: 'hero__fact-label' }, 'Stars'), el('dd', { class: 'hero__fact-value' }, String(project.stars)))
+      ? el('div', {}, el('dt', { class: 'hero__fact-label' }, t('detail.facts.stars')), el('dd', { class: 'hero__fact-value' }, String(project.stars)))
       : null,
   );
 
   const main = el(
     'div',
     {},
-    block('Ringkasan', prose(project.description || project.short_description)),
-    block('Masalah yang diselesaikan', prose(project.problem)),
-    block('Tujuan proyek', bullets(project.goals)),
-    block('Fitur utama', bullets(project.main_features)),
-    block('Tantangan teknis', prose(project.challenges)),
-    block('Pembelajaran', prose(project.learnings)),
-    block('Arsitektur', prose(project.architecture)),
+    block(t('detail.summary'), prose(project.description || project.short_description)),
+    block(t('detail.problem'), prose(project.problem)),
+    block(t('detail.goals'), bullets(project.goals)),
+    block(t('detail.features'), bullets(project.main_features)),
+    block(t('detail.challenges'), prose(project.challenges)),
+    block(t('detail.learnings'), prose(project.learnings)),
+    block(t('detail.architecture'), prose(project.architecture)),
   );
 
   if (galleryImages.length > 0) {
@@ -113,20 +114,20 @@ function renderDetail(project: Project, all: Project[]): void {
           {
             type: 'button',
             class: 'gallery__item',
-            'aria-label': `Perbesar gambar ${index + 1}`,
+            'aria-label': t('detail.zoomImage', { n: index + 1 }),
             onClick: () => openLightbox(galleryImages.map((g) => ({ url: g.image_url, caption: g.caption })), index),
           },
-          el('img', { src: image.image_url, alt: image.caption || `Screenshot ${index + 1}`, loading: 'lazy', decoding: 'async' }),
+          el('img', { src: image.image_url, alt: image.caption || t('detail.screenshotAlt', { n: index + 1 }), loading: 'lazy', decoding: 'async' }),
         ),
       );
     });
-    const galleryBlock = block('Gallery', gallery);
+    const galleryBlock = block(t('detail.gallery'), gallery);
     if (galleryBlock) main.appendChild(galleryBlock);
   }
 
   if (!project.description && !project.problem && !project.main_features) {
     main.appendChild(
-      emptyState('Detail proyek belum lengkap', 'Cerita proyek dapat dilengkapi melalui dashboard admin.'),
+      emptyState(t('detail.incomplete'), t('detail.incompleteHint')),
     );
   }
 
@@ -139,21 +140,21 @@ function renderDetail(project: Project, all: Project[]): void {
     el(
       'div',
       { class: 'card' },
-      el('h2', { class: 'mono', style: 'color: var(--accent); margin-bottom: var(--sp-4)' }, 'Tech stack'),
+      el('h2', { class: 'mono', style: 'color: var(--accent); margin-bottom: var(--sp-4)' }, t('detail.techStack')),
       project.technologies.length > 0
         ? techList
-        : el('p', { class: 'text-dim', style: 'font-size: var(--text-sm)' }, 'Belum ada teknologi tercatat.'),
+        : el('p', { class: 'text-dim', style: 'font-size: var(--text-sm)' }, t('detail.noTech')),
     ),
     el(
       'div',
       { class: 'card stack stack-4' },
-      el('h2', { class: 'mono', style: 'color: var(--accent)' }, 'Tautan'),
+      el('h2', { class: 'mono', style: 'color: var(--accent)' }, t('detail.links')),
       hasRepo
-        ? el('a', { class: 'row', href: project.repository_url as string, target: '_blank', rel: 'noopener noreferrer', style: 'font-size: var(--text-sm)' }, 'Repository ↗')
-        : el('span', { class: 'text-dim', style: 'font-size: var(--text-sm)' }, 'Repository tidak tersedia'),
+        ? el('a', { class: 'row', href: project.repository_url as string, target: '_blank', rel: 'noopener noreferrer', style: 'font-size: var(--text-sm)' }, `${t('label.repository')} ↗`)
+        : el('span', { class: 'text-dim', style: 'font-size: var(--text-sm)' }, t('detail.noRepo')),
       hasDemo
-        ? el('a', { class: 'row', href: project.live_demo_url as string, target: '_blank', rel: 'noopener noreferrer', style: 'font-size: var(--text-sm)' }, 'Live demo ↗')
-        : el('span', { class: 'text-dim', style: 'font-size: var(--text-sm)' }, 'Live demo tidak tersedia'),
+        ? el('a', { class: 'row', href: project.live_demo_url as string, target: '_blank', rel: 'noopener noreferrer', style: 'font-size: var(--text-sm)' }, `${t('label.liveDemo')} ↗`)
+        : el('span', { class: 'text-dim', style: 'font-size: var(--text-sm)' }, t('detail.noDemo')),
       isSafeUrl(project.readme_url)
         ? el('a', { class: 'row', href: project.readme_url as string, target: '_blank', rel: 'noopener noreferrer', style: 'font-size: var(--text-sm)' }, 'README ↗')
         : null,
@@ -167,7 +168,7 @@ function renderDetail(project: Project, all: Project[]): void {
   const hero = el(
     'div',
     { class: 'container detail-hero' },
-    linkButton('Semua proyek', '/projects.html', { variant: 'ghost', size: 'sm', class: 'detail-back' }),
+    linkButton(t('action.allProjects'), '/projects.html', { variant: 'ghost', size: 'sm', class: 'detail-back' }),
     el(
       'div',
       { class: 'row', style: 'justify-content: space-between; align-items: flex-start; gap: var(--sp-5)' },
@@ -184,7 +185,7 @@ function renderDetail(project: Project, all: Project[]): void {
       'div',
       { class: 'detail-hero__cover' },
       coverOk
-        ? el('img', { src: project.cover_image as string, alt: `Cover ${project.title}`, width: '1280', height: '640' })
+        ? el('img', { src: project.cover_image as string, alt: t('detail.coverAlt', { title: project.title }), width: '1280', height: '640' })
         : el('div', { class: 'detail-hero__placeholder', 'aria-hidden': 'true' }, initials(project.title)),
     ),
     meta,
@@ -215,7 +216,7 @@ onReady(() => {
       el(
         'div',
         { class: 'container section' },
-        emptyState('Proyek tidak ditentukan', 'Buka sebuah proyek dari daftar proyek.', linkButton('Ke daftar proyek', '/projects.html', { variant: 'ghost' })),
+        emptyState(t('detail.noSlug'), t('detail.noSlugHint'), linkButton(t('action.allProjects'), '/projects.html', { variant: 'ghost' })),
       ),
     );
     return;
@@ -237,9 +238,9 @@ onReady(() => {
           'div',
           { class: 'container section' },
           emptyState(
-            'Proyek tidak ditemukan',
-            err instanceof Error ? err.message : `Tidak ada proyek dengan slug "${slug}".`,
-            linkButton('Kembali ke proyek', '/projects.html', { variant: 'ghost' }),
+            t('detail.notFound'),
+            err instanceof Error ? err.message : t('detail.notFoundHint'),
+            linkButton(t('action.allProjects'), '/projects.html', { variant: 'ghost' }),
           ),
         ),
       );

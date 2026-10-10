@@ -148,7 +148,7 @@ function mountEducation(): void {
               'div',
               { class: 'timeline__item', 'data-current': index === 0 ? 'true' : undefined },
               el('span', { class: 'timeline__marker', 'aria-hidden': 'true' }),
-              el('div', { class: 'mono timeline__period' }, `${edu.start_year ?? '—'} — ${edu.end_year ?? 'Sekarang'}`),
+              el('div', { class: 'mono timeline__period' }, `${edu.start_year ?? '—'} — ${edu.end_year ?? t('common.present')}`),
               el('h3', { class: 'timeline__title' }, edu.institution),
               el('p', { class: 'timeline__sub' }, [edu.degree, edu.major].filter(Boolean).join(' · ') || '—'),
               edu.description ? el('p', { class: 'timeline__desc' }, edu.description) : null,

@@ -3,6 +3,7 @@ import { el, onReady, qs } from '@/utils/dom';
 import { mountPublicLayout } from '@/components/layout';
 import { contactForm } from '@/components/contact-form';
 import { api } from '@/api/client';
+import { t } from '@/i18n';
 import type { Profile } from '@/types';
 
 function mountForm(): void {
@@ -32,7 +33,7 @@ function mountInfo(): void {
       );
     })
     .catch(() => {
-      host.appendChild(el('span', { class: 'text-dim', style: 'font-size: var(--text-sm)' }, 'Informasi kontak belum diatur.'));
+      host.appendChild(el('span', { class: 'text-dim', style: 'font-size: var(--text-sm)' }, t('contact.infoNotSet')));
     });
 }
 
