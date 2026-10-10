@@ -245,10 +245,10 @@
    layer hint on each one costs GPU memory long after the transition ends. */
 .reveal {
   opacity: 0;
-  transform: translate3d(0, 18px, 0);
-  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  transform: translate3d(0, 38px, 0) scale(0.985);
+  transition: opacity 760ms var(--ease-out), transform 760ms var(--ease-out);
 }
-.reveal[data-visible='true'] { opacity: 1; transform: translate3d(0, 0, 0); }
+.reveal[data-visible='true'] { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
 }
@@ -270,35 +270,31 @@
 }
 
 /* --- Language switch transition ---
-   The page flips away like a card and the reloaded language flips back in.
-   `html` carries the state class; only `body` is transformed, and the html
-   background is painted underneath so no white edge shows mid-flip. */
-html.lang-flip-out,
-html.lang-flip-in { overflow: hidden; }
-
-@media (prefers-reduced-motion: no-preference) {
-  html.lang-flip-out body {
-    animation: lang-flip-out 300ms cubic-bezier(0.55, 0, 1, 0.45) forwards;
-    transform-origin: center center;
-    backface-visibility: hidden;
-  }
-  html.lang-flip-in body {
-    animation: lang-flip-in 340ms cubic-bezier(0, 0.55, 0.45, 1) both;
-    transform-origin: center center;
-    backface-visibility: hidden;
-  }
+   The outgoing page fades (never flips backwards), and the incoming page
+   reveals its text line by line: each caption/heading/lead flips up from
+   below into place, staggered by `--lang-i`. The i18n runtime tags the
+   elements and clears the class once the run finishes. */
+html.lang-out body {
+  opacity: 0;
+  transition: opacity 160ms ease-in;
 }
 
-@keyframes lang-flip-out {
-  to { transform: perspective(1400px) rotateY(-88deg); opacity: 0.35; }
+.lang-line {
+  transform-origin: 50% 100%;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  animation: lang-line-in 620ms var(--ease-out) both;
+  animation-delay: calc(var(--lang-i, 0) * 62ms);
 }
-@keyframes lang-flip-in {
-  from { transform: perspective(1400px) rotateY(88deg); opacity: 0.35; }
-  to { transform: perspective(1400px) rotateY(0deg); opacity: 1; }
+
+@keyframes lang-line-in {
+  from { opacity: 0; transform: perspective(760px) rotateX(-78deg) translateY(0.42em); }
+  to { opacity: 1; transform: perspective(760px) rotateX(0deg) translateY(0); }
 }
+
 @media (prefers-reduced-motion: reduce) {
-  html.lang-flip-out body,
-  html.lang-flip-in body { animation: none; }
+  html.lang-out body { opacity: 1; transition: none; }
+  .lang-line { animation: none; }
 }
 
 /* --- Scroll progress ---

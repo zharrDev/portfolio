@@ -72,7 +72,7 @@ function mountSkills(): void {
 
       return el(
         'div',
-        { class: 'grid grid--3' },
+        { class: 'grid grid--auto' },
         grouped.map((group, index) =>
           reveal(
             el(
@@ -99,7 +99,7 @@ function mountSkills(): void {
     },
     {
       loading: () =>
-        el('div', { class: 'grid grid--3' }, [0, 1, 2, 3, 4, 5].map(() => el('div', { class: 'skeleton', style: 'height:110px' }))),
+        el('div', { class: 'grid grid--auto' }, [0, 1, 2, 3, 4, 5].map(() => el('div', { class: 'skeleton', style: 'height:110px' }))),
     },
   );
 }
