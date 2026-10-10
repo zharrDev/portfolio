@@ -39,7 +39,7 @@ const id = {
   'skip.link': 'Lompat ke konten utama',
   'footer.contact': 'Kontak',
   'footer.links': 'Tautan',
-  'footer.tagline': 'Building systems. Exploring ideas.',
+  'footer.tagline': 'Lulusan Akuntansi · Backend & Web Developer',
   'footer.notSet': 'Kontak belum diatur',
   'footer.note': 'Go · TypeScript · PostgreSQL',
   'footer.rights': '© {year} Dzhar.dev — Izhar Harahap',
@@ -76,19 +76,19 @@ const id = {
   'time.yearsAgo': '{n} tahun lalu',
 
   /* --- home --- */
-  'home.hero.title': 'Membangun sistem. <em>Menjelajahi ide.</em> Mengubah kode jadi solusi.',
-  'home.hero.titleLead': 'Membangun sistem.',
-  'home.hero.titleEm': 'Menjelajahi ide.',
-  'home.hero.titleTail': 'Mengubah kode jadi solusi.',
-  'home.hero.lede': 'Mahasiswa Akuntansi secara pendidikan, pengembang secara kegemaran. Saya membangun aplikasi web, backend, dan sistem data dengan Go, TypeScript, dan PostgreSQL.',
+  'home.hero.title': 'Fresh graduate Akuntansi. <em>Membangun backend & web.</em> Siap berkontribusi.',
+  'home.hero.titleLead': 'Fresh graduate Akuntansi.',
+  'home.hero.titleEm': 'Membangun backend & web.',
+  'home.hero.titleTail': 'Siap berkontribusi.',
+  'home.hero.lede': 'Lulusan Akuntansi yang menekuni pengembangan backend dan web. Terbiasa membangun aplikasi dengan Go, TypeScript, dan PostgreSQL — dan siap bekerja penuh waktu.',
   'home.hero.ctaProjects': 'Lihat proyek',
   'home.hero.ctaResume': 'Baca CV',
   'home.hero.focus': 'Fokus',
-  'home.hero.studying': 'Sedang studi',
+  'home.hero.studying': 'Pendidikan',
   'home.hero.environment': 'Lingkungan',
   'home.hero.terminal': 'Sesi terminal menampilkan profil Dzhar',
   'home.about.eyebrow': '01 / Tentang',
-  'home.about.title': 'Dari Akuntansi ke baris kode',
+  'home.about.title': 'Perkenalan singkat',
   'home.about.more': 'Selengkapnya',
   'home.skills.eyebrow': '02 / Keahlian',
   'home.skills.title': 'Teknologi yang saya gunakan',
@@ -98,8 +98,8 @@ const id = {
   'home.projects.all': 'Semua proyek',
   'home.education.eyebrow': '04 / Pendidikan',
   'home.education.title': 'Latar belakang pendidikan',
-  'home.cta.title': 'Punya pertanyaan atau ingin berkolaborasi?',
-  'home.cta.body': 'Kirim pesan melalui formulir kontak — pesan tersimpan langsung di database.',
+  'home.cta.title': 'Tertarik bekerja bersama?',
+  'home.cta.body': 'Saya terbuka untuk peluang kerja dan kolaborasi. Kirim pesan lewat formulir kontak — pesan tersimpan langsung di database.',
   'home.cta.button': 'Hubungi saya',
   'home.availability': 'Status',
   'home.aboutTitle': 'Tentang saya',
@@ -229,7 +229,7 @@ const id = {
   /* --- contact page --- */
   'contact.page.eyebrow': 'Kontak',
   'contact.page.title': 'Mari terhubung',
-  'contact.page.lede': 'Punya pertanyaan, ide kolaborasi, atau ingin berdiskusi soal backend dan teknologi keuangan? Kirim pesan melalui formulir di samping.',
+  'contact.page.lede': 'Terbuka untuk peluang kerja, kolaborasi, atau sekadar berdiskusi soal backend dan web. Kirim pesan melalui formulir di samping.',
   'contact.page.how': 'Bagaimana pesan diproses',
   'contact.page.how1': 'Pesan divalidasi di frontend dan backend.',
   'contact.page.how2': 'Disimpan di PostgreSQL melalui REST API Go.',
@@ -254,7 +254,7 @@ const id = {
 
   /* --- about page --- */
   'about.page.eyebrow': 'Tentang',
-  'about.page.lede': 'Saya percaya bahwa proses bisnis dan software saling melengkapi. Latar belakang Akuntansi membantu saya memahami alur data dan aturan bisnis; pemrograman memberi saya alat untuk membangunnya menjadi sistem yang nyata.',
+  'about.page.lede': 'Saya lulusan Akuntansi yang menekuni pemrograman. Latar belakang akuntansi membantu saya memahami alur data dan aturan bisnis; pemrograman memberi saya alat untuk membangunnya menjadi sistem nyata. Saat ini saya mencari peran pertama sebagai backend/web developer.',
   'about.page.skills': 'Keahlian & teknologi',
   'about.page.education': 'Pendidikan',
   'about.page.experience': 'Pengalaman',
@@ -319,12 +319,12 @@ const id = {
   'about.noStoryHint': 'Bagian ini dapat diisi melalui dashboard admin → Profile.',
   'about.viewCredential': 'Lihat kredensial',
   'about.empty.education': 'Belum ada data pendidikan',
-  'about.page.titleLead': 'Mahasiswa Akuntansi secara pendidikan.',
-  'about.page.titleTail': 'Developer karena kegemaran.',
+  'about.page.titleLead': 'Lulusan Akuntansi.',
+  'about.page.titleTail': 'Developer yang siap berkontribusi.',
   'about.page.card2Title': 'Akuntansi × Software',
   'about.page.card2Body': 'Jurnal, laporan keuangan, dan kontrol data memberi konteks nyata untuk merancang aplikasi yang benar secara aturan bisnis.',
-  'about.page.card3Title': 'Fokus berikutnya',
-  'about.page.card3Body': 'Backend engineering, database, dan financial technology — membangun sistem yang rapi, aman, dan mudah dirawat.',
+  'about.page.card3Title': 'Yang sedang saya kejar',
+  'about.page.card3Body': 'Peran backend/web pertama, sekaligus memperdalam Go, PostgreSQL, dan rekayasa data.',
 
   'resume.contact.email': 'Email',
   'resume.contact.location': 'Lokasi',
@@ -368,7 +368,7 @@ const en: Record<StringKey, string> = {
   'skip.link': 'Skip to main content',
   'footer.contact': 'Contact',
   'footer.links': 'Links',
-  'footer.tagline': 'Building systems. Exploring ideas.',
+  'footer.tagline': 'Accounting graduate · Backend & Web Developer',
   'footer.notSet': 'Contact not set yet',
   'footer.note': 'Go · TypeScript · PostgreSQL',
   'footer.rights': '© {year} Dzhar.dev — Izhar Harahap',
@@ -402,19 +402,19 @@ const en: Record<StringKey, string> = {
   'time.monthsAgo': '{n} month(s) ago',
   'time.yearsAgo': '{n} year(s) ago',
 
-  'home.hero.title': 'Building systems. <em>Exploring ideas.</em> Turning code into solutions.',
-  'home.hero.titleLead': 'Building systems.',
-  'home.hero.titleEm': 'Exploring ideas.',
-  'home.hero.titleTail': 'Turning code into solutions.',
-  'home.hero.lede': 'An accounting student by education, a developer by passion. I build web applications, backends and data systems with Go, TypeScript and PostgreSQL.',
+  'home.hero.title': 'Accounting fresh graduate. <em>Building backend & web.</em> Ready to contribute.',
+  'home.hero.titleLead': 'Accounting fresh graduate.',
+  'home.hero.titleEm': 'Building backend & web.',
+  'home.hero.titleTail': 'Ready to contribute.',
+  'home.hero.lede': 'An Accounting graduate focused on backend and web development. Comfortable building applications with Go, TypeScript and PostgreSQL — and ready for a full-time role.',
   'home.hero.ctaProjects': 'View projects',
   'home.hero.ctaResume': 'Read CV',
   'home.hero.focus': 'Focus',
-  'home.hero.studying': 'Studying',
+  'home.hero.studying': 'Education',
   'home.hero.environment': 'Environment',
   'home.hero.terminal': 'Terminal session showing the Dzhar profile',
   'home.about.eyebrow': '01 / About',
-  'home.about.title': 'From Accounting to the first line of code',
+  'home.about.title': 'A short introduction',
   'home.about.more': 'Read more',
   'home.skills.eyebrow': '02 / Skills',
   'home.skills.title': 'Technologies I work with',
@@ -424,8 +424,8 @@ const en: Record<StringKey, string> = {
   'home.projects.all': 'All projects',
   'home.education.eyebrow': '04 / Education',
   'home.education.title': 'Education background',
-  'home.cta.title': 'Got a question, or want to collaborate?',
-  'home.cta.body': 'Send a message through the contact form — it is stored straight in the database.',
+  'home.cta.title': 'Want to work together?',
+  'home.cta.body': 'I am open to job opportunities and collaboration. Send a message through the contact form — it is stored straight in the database.',
   'home.cta.button': 'Get in touch',
   'home.availability': 'Status',
   'home.aboutTitle': 'About me',
@@ -547,7 +547,7 @@ const en: Record<StringKey, string> = {
   /* --- contact page --- */
   'contact.page.eyebrow': 'Contact',
   'contact.page.title': "Let's connect",
-  'contact.page.lede': 'Got a question, an idea to collaborate on, or want to talk backend and financial technology? Send a message through the form.',
+  'contact.page.lede': 'Open to job opportunities, collaboration, or a chat about backend and web. Send a message through the form.',
   'contact.page.how': 'How messages are handled',
   'contact.page.how1': 'Messages are validated on both the frontend and the backend.',
   'contact.page.how2': 'Stored in PostgreSQL through a Go REST API.',
@@ -572,7 +572,7 @@ const en: Record<StringKey, string> = {
 
   /* --- about page --- */
   'about.page.eyebrow': 'About',
-  'about.page.lede': 'I believe business processes and software complement each other. An Accounting background helps me understand data flow and business rules; programming gives me the tools to turn that into working systems.',
+  'about.page.lede': 'I am an Accounting graduate who focuses on software development. An accounting background helps me understand data flow and business rules; programming gives me the tools to turn that into working systems. I am now looking for my first role as a backend/web developer.',
   'about.page.skills': 'Skills & technologies',
   'about.page.education': 'Education',
   'about.page.experience': 'Experience',
@@ -635,12 +635,12 @@ const en: Record<StringKey, string> = {
   'about.noStoryHint': 'This section can be filled in from admin dashboard → Profile.',
   'about.viewCredential': 'View credential',
   'about.empty.education': 'No education entries yet',
-  'about.page.titleLead': 'Accounting student by education.',
-  'about.page.titleTail': 'Developer by passion.',
+  'about.page.titleLead': 'Accounting graduate.',
+  'about.page.titleTail': 'A developer ready to contribute.',
   'about.page.card2Title': 'Accounting × Software',
   'about.page.card2Body': 'Journals, financial statements and data controls give real context for designing applications that are correct by business rules.',
-  'about.page.card3Title': 'Next focus',
-  'about.page.card3Body': 'Backend engineering, databases and financial technology — building systems that are clean, safe and easy to maintain.',
+  'about.page.card3Title': 'What I am working towards',
+  'about.page.card3Body': 'A first backend/web role, plus going deeper into Go, PostgreSQL and data engineering.',
 
   'resume.contact.email': 'Email',
   'resume.contact.location': 'Location',
@@ -752,9 +752,58 @@ function crossfadeReload(): void {
     // Non-fatal: the swap still happens, just without the flip back in.
   }
 
-  const root = document.documentElement;
-  root.classList.add('lang-flip-out');
-  window.setTimeout(() => window.location.reload(), 300);
+  // Quick fade of the outgoing page. Deliberately *not* a flip: the incoming
+  // side carries the flip, line by line, so reversing it would read as an
+  // undo. Reload happens once the fade has played.
+  document.documentElement.classList.add('lang-out');
+  window.setTimeout(() => window.location.reload(), 175);
+}
+
+/**
+ * Text units that take part in the language-swap reveal, in one selector so
+ * the result is de-duplicated and in document order. Anything that owns the
+ * `.reveal` class is skipped: the scroll-reveal system already controls its
+ * opacity, and the two would fight over it.
+ */
+const LANG_LINE_SELECTOR = [
+  '#site-header .brand',
+  '#site-header .site-nav__link',
+  '.hero__name',
+  '.hero__title > span',
+  '.hero__title > em',
+  '.hero__lede',
+  '.hero__cta > *',
+  '.hero__facts > *',
+  '.page-head__eyebrow',
+  '.page-head__title',
+  '.page-head__lede',
+  '.section-head__title > *',
+  '.resume__section-title',
+  'footer .brand',
+  '.footer-meta',
+].join(', ');
+
+/**
+ * Flips each text unit up from below into place, staggered a beat apart.
+ * Runs only on the load that follows a language switch; the class and index
+ * are cleared afterwards so later transitions start from a clean state.
+ */
+function animateLanguageLines(): void {
+  const units = Array.from(document.querySelectorAll<HTMLElement>(LANG_LINE_SELECTOR)).filter(
+    (node) => !node.classList.contains('reveal') && !node.closest('[hidden]'),
+  );
+
+  units.forEach((node, index) => {
+    node.style.setProperty('--lang-i', String(Math.min(index, 22)));
+    node.classList.add('lang-line');
+  });
+
+  window.setTimeout(() => {
+    for (const node of units) {
+      node.classList.remove('lang-line');
+      node.style.removeProperty('--lang-i');
+    }
+  }, 1700);
 }
 
 /** Applies the locale to the document once the DOM is ready. */
@@ -786,11 +835,7 @@ export function initI18n(): void {
   }
 
   if (pendingFade && !reduced) {
-    // The flip-back runs as an animation with `both` fill, so it starts at the
-    // rotated state as soon as the class lands and settles at identity itself.
-    const flipRoot = document.documentElement;
-    flipRoot.classList.add('lang-flip-in');
-    window.setTimeout(() => flipRoot.classList.remove('lang-flip-in'), 380);
+    animateLanguageLines();
   }
 
   const title = qs('title');
