@@ -119,6 +119,18 @@ async function main() {
       w.document.querySelector('#featured-projects')?.textContent.includes('LedgerFlow') === true,
       'home: LedgerFlow card present',
     );
+
+    // i18n plumbing: the toggle must render, the document must declare its
+    // language, and no data-i18n element may still be showing its raw key
+    // (which is what t() returns when a dictionary lookup fails).
+    log(w.document.querySelectorAll('.lang-switch__btn').length === 2, 'i18n: language switch rendered',
+      `${w.document.querySelectorAll('.lang-switch__btn').length} options`);
+    log(w.document.documentElement.lang === 'id', 'i18n: document language declared',
+      `lang=${w.document.documentElement.lang}`);
+    const untranslated = [...w.document.querySelectorAll('[data-i18n]')]
+      .filter((node) => (node.dataset.i18n ?? '').includes('.') && node.textContent?.trim() === node.dataset.i18n);
+    log(untranslated.length === 0, 'i18n: no untranslated static copy',
+      untranslated.map((n) => n.dataset.i18n).join(', '));
   }
 
   // 2. Projects page: filter controls + grid, and filtering works.

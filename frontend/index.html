@@ -31,7 +31,7 @@
     />
   </head>
   <body>
-    <a class="skip-link" href="#main">Lompat ke konten utama</a>
+    <a class="skip-link" href="#main" data-i18n="skip.link">Lompat ke konten utama</a>
     <div id="site-header"></div>
 
     <main id="main" class="page">
@@ -46,36 +46,38 @@
 
             <p class="hero__name" id="hero-name">Izhar Harahap — Dzhar</p>
             <h1 class="hero__title">
-              Building systems. <em>Exploring ideas.</em> Turning code into solutions.
+              <span data-i18n="home.hero.titleLead">Membangun sistem.</span>
+              <em data-i18n="home.hero.titleEm">Menjelajahi ide.</em>
+              <span data-i18n="home.hero.titleTail">Mengubah kode jadi solusi.</span>
             </h1>
-            <p class="hero__lede" id="hero-lede">
-              Accounting student by education, developer by passion. Saya membangun aplikasi web,
-              backend, dan sistem data dengan Go, TypeScript, dan PostgreSQL.
+            <p class="hero__lede" id="hero-lede" data-i18n="home.hero.lede">
+              Mahasiswa Akuntansi secara pendidikan, pengembang secara kegemaran. Saya membangun
+              aplikasi web, backend, dan sistem data dengan Go, TypeScript, dan PostgreSQL.
             </p>
 
             <div class="hero__cta">
-              <a class="btn btn--primary" href="/projects.html">Lihat proyek</a>
-              <a class="btn btn--ghost" href="/resume.html">Baca CV</a>
+              <a class="btn btn--primary" href="/projects.html" data-i18n="home.hero.ctaProjects">Lihat proyek</a>
+              <a class="btn btn--ghost" href="/resume.html" data-i18n="home.hero.ctaResume">Baca CV</a>
               <a class="btn btn--ghost" href="https://github.com/zharrDev" target="_blank" rel="noopener noreferrer">GitHub</a>
             </div>
 
             <dl class="hero__facts">
               <div>
-                <dt class="hero__fact-label">Fokus</dt>
+                <dt class="hero__fact-label" data-i18n="home.hero.focus">Fokus</dt>
                 <dd class="hero__fact-value">Backend &amp; Web Development</dd>
               </div>
               <div>
-                <dt class="hero__fact-label">Sedang studi</dt>
+                <dt class="hero__fact-label" data-i18n="home.hero.studying">Sedang studi</dt>
                 <dd class="hero__fact-value" id="hero-university">Universitas Nasional Pasim</dd>
               </div>
               <div>
-                <dt class="hero__fact-label">Lingkungan</dt>
+                <dt class="hero__fact-label" data-i18n="home.hero.environment">Lingkungan</dt>
                 <dd class="hero__fact-value">Debian Linux · VS Code · Neovim</dd>
               </div>
             </dl>
           </div>
 
-          <div class="terminal" role="img" aria-label="Sesi terminal menampilkan profil Dzhar">
+          <div class="terminal" role="img" data-i18n-attr='{"aria-label":"home.hero.terminal"}' aria-label="Sesi terminal menampilkan profil Dzhar">
             <div class="terminal__bar">
               <span class="terminal__dot" style="background: #f87171"></span>
               <span class="terminal__dot" style="background: #fbbf24"></span>
@@ -110,10 +112,10 @@
       <section class="section container">
         <div class="section-head">
           <div class="section-head__title">
-            <span class="mono section-eyebrow">01 / Tentang</span>
-            <h2>Dari Akuntansi ke baris kode</h2>
+            <span class="mono section-eyebrow" data-i18n="home.about.eyebrow">01 / Tentang</span>
+            <h2 data-i18n="home.about.title">Dari Akuntansi ke baris kode</h2>
           </div>
-          <a class="btn btn--ghost btn--sm" href="/about.html">Selengkapnya</a>
+          <a class="btn btn--ghost btn--sm" href="/about.html" data-i18n="home.about.more">Selengkapnya</a>
         </div>
         <div id="about-teaser"></div>
       </section>
@@ -122,10 +124,10 @@
       <section class="section container">
         <div class="section-head">
           <div class="section-head__title">
-            <span class="mono section-eyebrow">02 / Skills</span>
-            <h2>Teknologi yang saya gunakan</h2>
+            <span class="mono section-eyebrow" data-i18n="home.skills.eyebrow">02 / Keahlian</span>
+            <h2 data-i18n="home.skills.title">Teknologi yang saya gunakan</h2>
           </div>
-          <p class="text-muted" style="max-width: 42ch; font-size: var(--text-sm)">
+          <p class="text-muted" style="max-width: 42ch; font-size: var(--text-sm)" data-i18n="home.skills.note">
             Dikelompokkan berdasarkan kategori — tanpa persentase yang dibuat-buat.
           </p>
         </div>
@@ -136,10 +138,10 @@
       <section class="section container">
         <div class="section-head">
           <div class="section-head__title">
-            <span class="mono section-eyebrow">03 / Proyek</span>
-            <h2>Proyek pilihan</h2>
+            <span class="mono section-eyebrow" data-i18n="home.projects.eyebrow">03 / Proyek</span>
+            <h2 data-i18n="home.projects.title">Proyek pilihan</h2>
           </div>
-          <a class="btn btn--ghost btn--sm" href="/projects.html">Semua proyek</a>
+          <a class="btn btn--ghost btn--sm" href="/projects.html" data-i18n="home.projects.all">Semua proyek</a>
         </div>
         <div id="featured-projects"></div>
       </section>
@@ -148,8 +150,8 @@
       <section class="section container">
         <div class="section-head">
           <div class="section-head__title">
-            <span class="mono section-eyebrow">04 / Pendidikan</span>
-            <h2>Latar belakang pendidikan</h2>
+            <span class="mono section-eyebrow" data-i18n="home.education.eyebrow">04 / Pendidikan</span>
+            <h2 data-i18n="home.education.title">Latar belakang pendidikan</h2>
           </div>
         </div>
         <div id="education-timeline"></div>
@@ -162,13 +164,13 @@
           style="display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); flex-wrap: wrap"
         >
           <div>
-            <h3 style="font-size: var(--text-xl)">Punya pertanyaan atau ingin berkolaborasi?</h3>
-            <p class="text-muted" style="font-size: var(--text-sm); margin-top: var(--sp-2)">
+            <h3 style="font-size: var(--text-xl)" data-i18n="home.cta.title">Punya pertanyaan atau ingin berkolaborasi?</h3>
+            <p class="text-muted" style="font-size: var(--text-sm); margin-top: var(--sp-2)" data-i18n="home.cta.body">
               Kirim pesan melalui formulir kontak — pesan tersimpan langsung di database.
             </p>
           </div>
           <div class="row">
-            <a class="btn btn--primary" href="/contact.html">Hubungi saya</a>
+            <a class="btn btn--primary" href="/contact.html" data-i18n="home.cta.button">Hubungi saya</a>
             <a class="btn btn--ghost" href="https://github.com/zharrDev" target="_blank" rel="noopener noreferrer">GitHub</a>
           </div>
         </div>
