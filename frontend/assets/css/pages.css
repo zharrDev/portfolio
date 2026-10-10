@@ -6,13 +6,43 @@
 .page { animation: page-in var(--dur) var(--ease-out); }
 @keyframes page-in { from { opacity: 0; transform: translateY(6px); } }
 
-.page-head { padding-top: clamp(3rem, 8vh, 6rem); padding-bottom: var(--sp-7); }
+.page-head {
+  position: relative;
+  padding-top: clamp(3rem, 8vh, 6rem);
+  padding-bottom: var(--sp-7);
+}
+/* Editorial hairline under the intro block, faded at both ends. */
+.page-head::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line-strong), transparent 85%);
+}
 .page-head__eyebrow { color: var(--accent); margin-bottom: var(--sp-4); }
 .page-head__title { margin-bottom: var(--sp-4); }
 .page-head__lede { color: var(--fg-muted); max-width: 60ch; font-size: var(--text-lg); }
 
 /* --- Hero --- */
-.hero { padding-top: clamp(3rem, 9vh, 7rem); padding-bottom: clamp(3rem, 8vh, 6rem); }
+.hero {
+  position: relative;
+  padding-top: clamp(3rem, 9vh, 7rem);
+  padding-bottom: clamp(3rem, 8vh, 6rem);
+}
+
+/* A soft spotlight behind the headline lifts the first screen without adding
+   a background image or an extra DOM node. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 130%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(46rem 26rem at 68% 8%, rgba(56, 189, 248, 0.16), transparent 65%);
+}
 .hero__grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
@@ -33,8 +63,23 @@
   100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
 }
 .hero__name { font-family: var(--font-mono); color: var(--fg-muted); font-size: var(--text-sm); letter-spacing: 0.04em; }
-.hero__title { margin-block: var(--sp-4) var(--sp-5); max-width: 18ch; }
-.hero__title em { font-style: normal; color: var(--accent); }
+.hero__title {
+  margin-block: var(--sp-4) var(--sp-5);
+  max-width: 15ch;
+  font-size: clamp(2.7rem, 1.3rem + 6.4vw, 6rem);
+  letter-spacing: -0.035em;
+}
+.hero__title > span { display: block; }
+.hero__title em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--accent), var(--accent-2) 55%, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero__title em { color: var(--accent); }
+}
 .hero__lede { color: var(--fg-muted); font-size: var(--text-lg); max-width: 52ch; }
 .hero__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-7); }
 .hero__facts { display: flex; flex-wrap: wrap; gap: var(--sp-6); margin-top: var(--sp-8); padding-top: var(--sp-6); border-top: 1px solid var(--line); }

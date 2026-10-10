@@ -125,6 +125,18 @@
   transition: transform var(--dur-slow) var(--ease-out);
 }
 .project-card:hover .project-card__thumb img { transform: scale(1.04); }
+/* A bottom scrim that fades in on hover, so the cover reads with depth and the
+   meta chips stay legible over bright screenshots. */
+.project-card__thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(6, 9, 16, 0.6), transparent 48%);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+.project-card:hover .project-card__thumb::after { opacity: 1; }
 .project-card__placeholder {
   position: absolute; inset: 0;
   display: grid; place-items: center;
