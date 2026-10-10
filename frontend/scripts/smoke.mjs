@@ -8,6 +8,11 @@
  *
  * Not part of the shipped app; it exists so the pages can be verified without
  * a browser binary.
+ *
+ * The script owns the fixtures it needs: the inbox check creates a contact
+ * message through the public API and deletes it again through the admin API,
+ * so it passes on a freshly seeded database instead of depending on leftover
+ * data from an earlier manual run.
  */
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -177,8 +182,36 @@ async function main() {
     log(w.document.querySelector('.modal') !== null, 'admin: editor modal opens');
   }
   {
+    // A fresh seed leaves the inbox empty, which is correct product behaviour,
+    // so create a message first and clean it up afterwards. Seeding the fixture
+    // here keeps the assertion strong (a real stored message must render) while
+    // making the check independent of the database's prior state.
+    const marker = `smoke fixture ${Date.now()}`;
+    const created = await realFetch(`${API}/api/v1/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: 'Smoke Test',
+        email: 'smoke@example.com',
+        subject: marker,
+        message: 'Pesan otomatis dari smoke test; aman untuk dihapus.',
+        website: '',
+      }),
+    });
+    const createdBody = created.ok ? await created.json() : null;
+    const fixtureId = createdBody?.data?.id ?? null;
+    log(fixtureId !== null, 'admin: contact message created as fixture', `HTTP ${created.status}`);
+
     const w = await loadPage('admin/messages.html');
-    log(w.document.querySelectorAll('.message-item').length >= 1, 'admin: messages list rendered');
+    const items = w.document.querySelectorAll('.message-item');
+    log(items.length >= 1, 'admin: messages list rendered', `${items.length} item(s)`);
+    log(
+      w.document.body.textContent.includes(marker),
+      'admin: the stored message is rendered in the list',
+    );
+
+    const removed = await realFetch(`${API}/api/v1/admin/messages/${fixtureId}`, { method: 'DELETE' });
+    log(removed.status === 204 || removed.status === 200, 'admin: fixture message removed', `HTTP ${removed.status}`);
   }
   {
     const w = await loadPage('404.html');
