@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#060910" />
+    <title>404 — Halaman tidak ditemukan · Dzhar.dev</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Lompat ke konten utama</a>
+    <div id="site-header"></div>
+
+    <main id="main" class="container">
+      <div class="notfound">
+        <div class="terminal" style="width: min(560px, 90vw); text-align: left">
+          <div class="terminal__bar">
+            <span class="terminal__dot" style="background: #f87171"></span>
+            <span class="terminal__dot" style="background: #fbbf24"></span>
+            <span class="terminal__dot" style="background: #34d399"></span>
+            <span class="terminal__title">bash — 404</span>
+          </div>
+          <div class="terminal__body">
+            <div class="terminal__line">
+              <span class="terminal__prompt">$</span><span class="terminal__val">cd <span id="notfound-path">/</span></span>
+            </div>
+            <div class="terminal__line">
+              <span class="terminal__comment">bash: no such file or directory</span>
+            </div>
+            <div class="terminal__line" style="margin-top: var(--sp-3)">
+              <span class="terminal__prompt">$</span><span class="cursor" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+
+        <h1 style="font-size: var(--text-2xl)">Halaman tidak ditemukan</h1>
+        <p class="text-muted" style="max-width: 46ch">
+          Rute yang kamu tuju tidak ada, atau sudah dipindahkan. Kembali ke beranda atau telusuri proyek.
+        </p>
+
+        <div class="row" style="justify-content: center; margin-top: var(--sp-4)">
+          <a class="btn btn--primary" href="/index.html">Beranda</a>
+          <a class="btn btn--ghost" href="/projects.html">Lihat proyek</a>
+        </div>
+      </div>
+    </main>
+
+    <div id="site-footer"></div>
+    <script type="module" src="/src/pages/not-found.ts"></script>
+  </body>
+</html>

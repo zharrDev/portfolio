@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: dzhar-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-dzhar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dzhar}
+      POSTGRES_DB: ${POSTGRES_DB:-dzhar_dev}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dzhar} -d ${POSTGRES_DB:-dzhar_dev}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dzhar-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      APP_PORT: "8080"
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:8080}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:5173}
+      DATABASE_URL: postgres://${POSTGRES_USER:-dzhar}:${POSTGRES_PASSWORD:-dzhar}@db:5432/${POSTGRES_DB:-dzhar_dev}?sslmode=disable
+      GITHUB_USERNAME: ${GITHUB_USERNAME:-zharrDev}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      GITHUB_CACHE_TTL_MINUTES: ${GITHUB_CACHE_TTL_MINUTES:-30}
+      GITHUB_REQUEST_TIMEOUT_SECONDS: ${GITHUB_REQUEST_TIMEOUT_SECONDS:-10}
+      CONTACT_RATE_LIMIT_PER_MIN: ${CONTACT_RATE_LIMIT_PER_MIN:-5}
+      UPLOAD_DIR: /app/uploads
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-no-reply@dzhar.dev}
+      CONTACT_NOTIFY_TO: ${CONTACT_NOTIFY_TO:-}
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads:/app/uploads
+
+volumes:
+  db_data:
+  uploads:

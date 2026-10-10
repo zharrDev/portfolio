@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#060910"/>
+      <stop offset="1" stop-color="#0b1224"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <g stroke="#8aa0bd" stroke-opacity=".12">
+    <line x1="0" y1="120" x2="1200" y2="120"/>
+    <line x1="0" y1="510" x2="1200" y2="510"/>
+    <line x1="120" y1="0" x2="120" y2="630"/>
+    <line x1="1080" y1="0" x2="1080" y2="630"/>
+  </g>
+  <text x="120" y="250" font-family="'Space Grotesk',sans-serif" font-size="96" font-weight="700" fill="#e6edf6">DZHAR<tspan fill="#38bdf8">.DEV</tspan></text>
+  <text x="120" y="330" font-family="'JetBrains Mono',monospace" font-size="26" fill="#8aa0bd">Building systems. Exploring ideas.</text>
+  <text x="120" y="380" font-family="'JetBrains Mono',monospace" font-size="26" fill="#22d3ee">Izhar Harahap — Backend &amp; Web Developer</text>
+</svg>

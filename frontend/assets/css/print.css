@@ -1,0 +1,74 @@
+/* ==========================================================================
+   Print — CV / resume only. Produces a clean, ink-light A4 document.
+   ========================================================================== */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm 14mm;
+  }
+
+  :root {
+    --bg: #ffffff;
+    --bg-elev: #ffffff;
+    --bg-inset: #ffffff;
+    --fg: #111827;
+    --fg-muted: #374151;
+    --fg-dim: #6b7280;
+    --accent: #0b6bcb;
+    --line: #d1d5db;
+    --line-strong: #9ca3af;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 10.5pt;
+    line-height: 1.45;
+  }
+
+  /* Hide everything that is not the resume document. */
+  .site-header,
+  .site-footer,
+  .no-print,
+  .toast-region,
+  .skip-link {
+    display: none !important;
+  }
+
+  main { padding: 0 !important; }
+
+  .resume { padding: 0 !important; }
+  .resume__header { margin-bottom: 6mm; }
+
+  h1, h2, h3, h4 { color: #111827 !important; }
+
+  .resume__section { margin-top: 6mm; break-inside: avoid; }
+  .resume__section-title {
+    color: #0b6bcb !important;
+    border-bottom: 1px solid #d1d5db !important;
+  }
+
+  .resume-item { break-inside: avoid; border-color: #e5e7eb !important; }
+  .resume-item__period { color: #6b7280 !important; }
+
+  .tag, .skill-chip {
+    border: 1px solid #d1d5db !important;
+    background: #ffffff !important;
+    color: #374151 !important;
+  }
+
+  a { color: #0b6bcb !important; text-decoration: none; }
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 8pt;
+    color: #6b7280;
+  }
+
+  /* Never split a page awkwardly mid-project. */
+  .print-block { break-inside: avoid; }
+
+  /* Show URLs of the section without interactive chrome. */
+  .project-card { break-inside: avoid; box-shadow: none !important; border-color: #e5e7eb !important; }
+  .project-card:hover { transform: none !important; }
+}

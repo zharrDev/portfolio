@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#060910" />
+    <title>Dzhar.dev — Izhar Harahap · Backend &amp; Web Developer</title>
+    <meta
+      name="description"
+      content="Portfolio Izhar 'Dzhar' Harahap — mahasiswa Akuntansi yang membangun sistem, backend, dan aplikasi web. Go, TypeScript, PostgreSQL, dan teknologi keuangan."
+    />
+    <meta name="author" content="Izhar Harahap" />
+    <link rel="canonical" href="https://dzhar.dev/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dzhar.dev" />
+    <meta property="og:title" content="Dzhar.dev — Izhar Harahap · Backend &amp; Web Developer" />
+    <meta property="og:description" content="Accounting student by education. Developer by passion." />
+    <meta property="og:url" content="https://dzhar.dev/" />
+    <meta property="og:image" content="/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dzhar.dev — Izhar Harahap" />
+    <meta name="twitter:image" content="/og-image.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Lompat ke konten utama</a>
+    <div id="site-header"></div>
+
+    <main id="main">
+      <!-- Hero -->
+      <section class="hero container">
+        <div class="hero__grid">
+          <div id="hero-data">
+            <div class="hero__status" id="hero-status" hidden>
+              <span class="hero__pulse" aria-hidden="true"></span>
+              <span class="mono" style="color: var(--fg-muted)" id="hero-status-text"></span>
+            </div>
+
+            <p class="hero__name" id="hero-name">Izhar Harahap — Dzhar</p>
+            <h1 class="hero__title">
+              Building systems. <em>Exploring ideas.</em> Turning code into solutions.
+            </h1>
+            <p class="hero__lede" id="hero-lede">
+              Accounting student by education, developer by passion. Saya membangun aplikasi web,
+              backend, dan sistem data dengan Go, TypeScript, dan PostgreSQL.
+            </p>
+
+            <div class="hero__cta">
+              <a class="btn btn--primary" href="/projects.html">Lihat proyek</a>
+              <a class="btn btn--ghost" href="/resume.html">Baca CV</a>
+              <a class="btn btn--ghost" href="https://github.com/zharrDev" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+
+            <dl class="hero__facts">
+              <div>
+                <dt class="hero__fact-label">Fokus</dt>
+                <dd class="hero__fact-value">Backend &amp; Web Development</dd>
+              </div>
+              <div>
+                <dt class="hero__fact-label">Sedang studi</dt>
+                <dd class="hero__fact-value" id="hero-university">Universitas Nasional Pasim</dd>
+              </div>
+              <div>
+                <dt class="hero__fact-label">Lingkungan</dt>
+                <dd class="hero__fact-value">Debian Linux · VS Code · Neovim</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="terminal" role="img" aria-label="Sesi terminal menampilkan profil Dzhar">
+            <div class="terminal__bar">
+              <span class="terminal__dot" style="background: #f87171"></span>
+              <span class="terminal__dot" style="background: #fbbf24"></span>
+              <span class="terminal__dot" style="background: #34d399"></span>
+              <span class="terminal__title">dzhar@debian: ~/portfolio</span>
+            </div>
+            <div class="terminal__body">
+              <div class="terminal__line">
+                <span class="terminal__prompt">$</span><span class="terminal__val">whoami</span>
+              </div>
+              <div class="terminal__line">
+                <span class="terminal__comment">→ accounting student · developer</span>
+              </div>
+              <div class="terminal__line" style="margin-top: var(--sp-3)">
+                <span class="terminal__prompt">$</span><span class="terminal__key">stack</span
+                ><span class="terminal__val">--list</span>
+              </div>
+              <div class="terminal__line"><span class="terminal__comment">go, typescript, sql, c, java</span></div>
+              <div class="terminal__line" style="margin-top: var(--sp-3)">
+                <span class="terminal__prompt">$</span><span class="terminal__val">focus</span>
+              </div>
+              <div class="terminal__line"><span class="terminal__comment">backend · web · fintech</span></div>
+              <div class="terminal__line" style="margin-top: var(--sp-3)">
+                <span class="terminal__prompt">$</span><span class="cursor" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About teaser -->
+      <section class="section container">
+        <div class="section-head">
+          <div class="section-head__title">
+            <span class="mono section-eyebrow">01 / Tentang</span>
+            <h2>Dari Akuntansi ke baris kode</h2>
+          </div>
+          <a class="btn btn--ghost btn--sm" href="/about.html">Selengkapnya</a>
+        </div>
+        <div id="about-teaser"></div>
+      </section>
+
+      <!-- Skills -->
+      <section class="section container">
+        <div class="section-head">
+          <div class="section-head__title">
+            <span class="mono section-eyebrow">02 / Skills</span>
+            <h2>Teknologi yang saya gunakan</h2>
+          </div>
+          <p class="text-muted" style="max-width: 42ch; font-size: var(--text-sm)">
+            Dikelompokkan berdasarkan kategori — tanpa persentase yang dibuat-buat.
+          </p>
+        </div>
+        <div id="skills-grid"></div>
+      </section>
+
+      <!-- Featured projects -->
+      <section class="section container">
+        <div class="section-head">
+          <div class="section-head__title">
+            <span class="mono section-eyebrow">03 / Proyek</span>
+            <h2>Proyek pilihan</h2>
+          </div>
+          <a class="btn btn--ghost btn--sm" href="/projects.html">Semua proyek</a>
+        </div>
+        <div id="featured-projects"></div>
+      </section>
+
+      <!-- Education -->
+      <section class="section container">
+        <div class="section-head">
+          <div class="section-head__title">
+            <span class="mono section-eyebrow">04 / Pendidikan</span>
+            <h2>Latar belakang pendidikan</h2>
+          </div>
+        </div>
+        <div id="education-timeline"></div>
+      </section>
+
+      <!-- Contact CTA -->
+      <section class="section container">
+        <div
+          class="card"
+          style="display: flex; align-items: center; justify-content: space-between; gap: var(--sp-5); flex-wrap: wrap"
+        >
+          <div>
+            <h3 style="font-size: var(--text-xl)">Punya pertanyaan atau ingin berkolaborasi?</h3>
+            <p class="text-muted" style="font-size: var(--text-sm); margin-top: var(--sp-2)">
+              Kirim pesan melalui formulir kontak — pesan tersimpan langsung di database.
+            </p>
+          </div>
+          <div class="row">
+            <a class="btn btn--primary" href="/contact.html">Hubungi saya</a>
+            <a class="btn btn--ghost" href="https://github.com/zharrDev" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+    <script type="module" src="/src/pages/home.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#060910" />
+    <title>Tentang — Dzhar.dev</title>
+    <meta
+      name="description"
+      content="Perjalanan Izhar 'Dzhar' Harahap sebagai mahasiswa Akuntansi yang mengembangkan minat di bidang programming, backend, dan teknologi keuangan."
+    />
+    <link rel="canonical" href="https://dzhar.dev/about" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content="Tentang — Dzhar.dev" />
+    <meta property="og:description" content="Accounting student by education. Developer by passion." />
+    <meta property="og:url" content="https://dzhar.dev/about" />
+    <meta property="og:image" content="/og-image.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Lompat ke konten utama</a>
+    <div id="site-header"></div>
+
+    <main id="main" class="container">
+      <div class="page-head">
+        <span class="mono page-head__eyebrow">Tentang</span>
+        <h1 class="page-head__title">
+          Accounting student by education.<br />
+          <span style="color: var(--accent)">Developer by passion.</span>
+        </h1>
+        <p class="page-head__lede">
+          Saya percaya bahwa proses bisnis dan software saling melengkapi. Latar belakang Akuntansi
+          membantu saya memahami alur data dan aturan bisnis; pemrograman memberi saya alat untuk
+          membangunnya menjadi sistem yang nyata.
+        </p>
+      </div>
+
+      <section class="section section--tight">
+        <div class="about__grid">
+          <div class="portrait" id="portrait">
+            <span class="portrait__frame" aria-hidden="true"></span>
+            <div class="portrait__tag">
+              <span class="tag tag--accent">Dzhar.dev</span>
+              <span class="tag">Debian Linux</span>
+            </div>
+          </div>
+
+          <div class="stack stack-6">
+            <dl class="about__aside-list" id="profile-facts"></dl>
+            <div id="about-prose"></div>
+            <div class="row">
+              <a class="btn btn--primary btn--sm" href="/contact.html">Hubungi saya</a>
+              <a class="btn btn--ghost btn--sm" href="https://github.com/zharrDev" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a class="btn btn--ghost btn--sm" href="/resume.html">Lihat CV</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="resume__section print-block">
+        <h2 class="resume__section-title">Keahlian &amp; teknologi</h2>
+        <div id="about-skills"></div>
+      </section>
+
+      <section class="resume__section print-block">
+        <h2 class="resume__section-title">Pendidikan</h2>
+        <div id="about-education"></div>
+      </section>
+
+      <section class="resume__section print-block" id="experience-section" hidden>
+        <h2 class="resume__section-title">Pengalaman</h2>
+        <div id="about-experience"></div>
+      </section>
+
+      <section class="resume__section print-block" id="certificates-section" hidden>
+        <h2 class="resume__section-title">Sertifikat</h2>
+        <div id="about-certificates"></div>
+      </section>
+
+      <section class="section section--tight">
+        <div class="grid grid--3">
+          <div class="card reveal">
+            <h3 style="font-size: var(--text-lg)">Cara saya belajar</h3>
+            <p class="text-muted" style="font-size: var(--text-sm); margin-top: var(--sp-2)">
+              Membangun proyek nyata, membaca dokumentasi resmi, dan memverifikasi hasilnya dengan
+              pengujian — bukan sekadar mengikuti tutorial.
+            </p>
+          </div>
+          <div class="card reveal" style="transition-delay: 60ms">
+            <h3 style="font-size: var(--text-lg)">Akuntansi × Software</h3>
+            <p class="text-muted" style="font-size: var(--text-sm); margin-top: var(--sp-2)">
+              Jurnal, laporan keuangan, dan kontrol data memberi konteks nyata untuk merancang
+              aplikasi yang benar secara aturan bisnis.
+            </p>
+          </div>
+          <div class="card reveal" style="transition-delay: 120ms">
+            <h3 style="font-size: var(--text-lg)">Fokus berikutnya</h3>
+            <p class="text-muted" style="font-size: var(--text-sm); margin-top: var(--sp-2)">
+              Backend engineering, database, dan financial technology — membangun sistem yang rapi,
+              aman, dan mudah dirawat.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+    <script type="module" src="/src/pages/about.ts"></script>
+  </body>
+</html>

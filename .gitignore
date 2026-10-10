@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build output
+frontend/dist/
+frontend/.vite/
+backend/bin/
+backend/tmp/
+*.exe
+
+# Environment
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Uploads (runtime user content)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Go
+*.test
+*.out
+coverage.txt
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log

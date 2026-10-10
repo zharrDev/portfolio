@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#060910" />
+    <title>Kontak — Dzhar.dev</title>
+    <meta
+      name="description"
+      content="Hubungi Izhar 'Dzhar' Harahap untuk kolaborasi, pertanyaan, atau diskusi seputar backend dan pengembangan web."
+    />
+    <link rel="canonical" href="https://dzhar.dev/contact" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kontak — Dzhar.dev" />
+    <meta property="og:url" content="https://dzhar.dev/contact" />
+    <meta property="og:image" content="/og-image.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Lompat ke konten utama</a>
+    <div id="site-header"></div>
+
+    <main id="main" class="container">
+      <div class="page-head">
+        <span class="mono page-head__eyebrow">Kontak</span>
+        <h1 class="page-head__title">Mari terhubung</h1>
+        <p class="page-head__lede">
+          Punya pertanyaan, ide kolaborasi, atau ingin berdiskusi soal backend dan teknologi
+          keuangan? Kirim pesan melalui formulir di samping.
+        </p>
+      </div>
+
+      <div class="contact__grid">
+        <div id="contact-form-host"></div>
+
+        <div class="stack stack-6">
+          <div class="contact-card stack stack-4 reveal">
+            <h2 class="mono" style="color: var(--accent)">Informasi</h2>
+            <div id="contact-info"></div>
+          </div>
+
+          <div class="contact-card stack stack-3 reveal" style="transition-delay: 60ms">
+            <h2 class="mono" style="color: var(--accent)">Bagaimana pesan diproses</h2>
+            <ul class="prose" style="gap: var(--sp-2); font-size: var(--text-sm)">
+              <li>Pesan divalidasi di frontend dan backend.</li>
+              <li>Disimpan di PostgreSQL melalui REST API Go.</li>
+              <li>Dilindungi honeypot dan rate limiting.</li>
+              <li>Dibaca melalui dashboard admin.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="site-footer"></div>
+    <script type="module" src="/src/pages/contact.ts"></script>
+  </body>
+</html>
