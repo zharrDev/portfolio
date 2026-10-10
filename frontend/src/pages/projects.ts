@@ -85,7 +85,7 @@ function renderGrid(): void {
     return;
   }
 
-  const grid = el('div', { class: 'grid grid--3' });
+  const grid = el('div', { class: 'grid grid--auto' });
   filtered.forEach((project, index) => {
     const wrapper = el('div', { class: 'reveal', style: `transition-delay:${Math.min(index, 5) * 50}ms` });
     wrapper.appendChild(projectCard(project));
@@ -234,7 +234,7 @@ onReady(() => {
 
   const host = qs('#projects-grid');
   if (host) {
-    host.appendChild(el('div', { class: 'grid grid--3' }, [0, 1, 2, 3, 4, 5].map(() => projectCardSkeleton())));
+    host.appendChild(el('div', { class: 'grid grid--auto' }, [0, 1, 2, 3].map(() => projectCardSkeleton())));
   }
 
   api

@@ -17,6 +17,8 @@ html {
   scroll-behavior: smooth;
   /* In-page anchors land below the sticky header instead of under it. */
   scroll-padding-top: calc(var(--header-h) + var(--sp-3));
+  /* Painted under `body` so the language flip never reveals a white edge. */
+  background: var(--bg);
 }
 
 @media (prefers-reduced-motion: reduce) {

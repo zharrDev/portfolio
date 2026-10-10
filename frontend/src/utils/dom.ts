@@ -147,6 +147,23 @@ export function onReady(fn: () => void): void {
   }
 }
 
+/**
+ * Marks structural blocks as scroll-reveal targets.
+ *
+ * Page copy that comes from the API already gets `.reveal` wrappers where it
+ * is rendered, but the static furniture — section heads, page intros, resume
+ * blocks — would otherwise appear instantly. Marking them here means a page
+ * animated on scroll without hand-tagging every template. Anything already
+ * inside a reveal wrapper is skipped so the two never nest.
+ */
+export function markRevealSections(root: ParentNode = document): void {
+  const selector = '.section-head, .page-head, .resume__section, .hero__facts, .results-bar';
+  for (const node of qsa<HTMLElement>(selector, root)) {
+    if (node.closest('.reveal')) continue;
+    node.classList.add('reveal');
+  }
+}
+
 /** Adds the scroll-reveal behaviour to a root element. */
 export function observeReveals(root: ParentNode = document): void {
   const targets = qsa<HTMLElement>('.reveal', root);

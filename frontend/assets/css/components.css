@@ -270,21 +270,35 @@
 }
 
 /* --- Language switch transition ---
-   A fixed veil fades over the page before the reload and fades out on the
-   next load. Being its own composited layer, it never forces a repaint of the
-   whole document the way animating `body` opacity would. */
-.lang-veil {
-  position: fixed;
-  inset: 0;
-  z-index: 400;
-  background: var(--bg);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 220ms var(--ease-out);
+   The page flips away like a card and the reloaded language flips back in.
+   `html` carries the state class; only `body` is transformed, and the html
+   background is painted underneath so no white edge shows mid-flip. */
+html.lang-flip-out,
+html.lang-flip-in { overflow: hidden; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html.lang-flip-out body {
+    animation: lang-flip-out 300ms cubic-bezier(0.55, 0, 1, 0.45) forwards;
+    transform-origin: center center;
+    backface-visibility: hidden;
+  }
+  html.lang-flip-in body {
+    animation: lang-flip-in 340ms cubic-bezier(0, 0.55, 0.45, 1) both;
+    transform-origin: center center;
+    backface-visibility: hidden;
+  }
 }
-.lang-veil.is-on { opacity: 1; pointer-events: auto; }
+
+@keyframes lang-flip-out {
+  to { transform: perspective(1400px) rotateY(-88deg); opacity: 0.35; }
+}
+@keyframes lang-flip-in {
+  from { transform: perspective(1400px) rotateY(88deg); opacity: 0.35; }
+  to { transform: perspective(1400px) rotateY(0deg); opacity: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .lang-veil { transition: none; }
+  html.lang-flip-out body,
+  html.lang-flip-in body { animation: none; }
 }
 
 /* --- Scroll progress ---

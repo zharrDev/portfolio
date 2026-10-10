@@ -749,17 +749,12 @@ function crossfadeReload(): void {
   try {
     window.sessionStorage.setItem(FADE_KEY, '1');
   } catch {
-    // Non-fatal: the swap still happens, just without the fade back in.
+    // Non-fatal: the swap still happens, just without the flip back in.
   }
 
-  // A dedicated veil rather than animating `body`: it composites on its own
-  // layer, so the fade never repaints the whole document frame by frame.
-  const veil = document.createElement('div');
-  veil.className = 'lang-veil';
-  document.documentElement.appendChild(veil);
-  window.requestAnimationFrame(() => veil.classList.add('is-on'));
-
-  window.setTimeout(() => window.location.reload(), 220);
+  const root = document.documentElement;
+  root.classList.add('lang-flip-out');
+  window.setTimeout(() => window.location.reload(), 300);
 }
 
 /** Applies the locale to the document once the DOM is ready. */
@@ -791,15 +786,11 @@ export function initI18n(): void {
   }
 
   if (pendingFade && !reduced) {
-    const veil = document.createElement('div');
-    veil.className = 'lang-veil is-on';
-    document.documentElement.appendChild(veil);
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        veil.classList.remove('is-on');
-        window.setTimeout(() => veil.remove(), 260);
-      });
-    });
+    // The flip-back runs as an animation with `both` fill, so it starts at the
+    // rotated state as soon as the class lands and settles at identity itself.
+    const flipRoot = document.documentElement;
+    flipRoot.classList.add('lang-flip-in');
+    window.setTimeout(() => flipRoot.classList.remove('lang-flip-in'), 380);
   }
 
   const title = qs('title');

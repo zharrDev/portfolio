@@ -58,6 +58,9 @@
 .grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* Card grids that read well at any count: empty tracks collapse, so two cards
+   fill the row instead of leaving a hole, and four spread across one line. */
+.grid--auto { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
 
 @media (max-width: 900px) {
   .grid--3, .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -78,11 +81,19 @@
   flex-wrap: wrap;
 }
 
-/* --- Header --- */
-.site-header {
+/* --- Header ---
+   Stickiness lives on the `#site-header` slot, not on `.site-header`. A
+   `position: sticky` element is constrained by its containing block, and the
+   slot is only as tall as the bar — so putting sticky on the inner element
+   made the header scroll away with its own wrapper. */
+#site-header {
   position: sticky;
   top: 0;
   z-index: 50;
+}
+
+.site-header {
+  position: relative;
   height: var(--header-h);
   display: flex;
   align-items: center;
@@ -170,12 +181,14 @@
   .site-nav__link::after { transition: none; }
 }
 
-.nav-toggle {
+/* `.btn` (components.css, which loads after this file) sets `display:flex`
+   with equal specificity, so the selector has to be specific enough to win. */
+.nav-toggle.btn {
   display: none;
 }
 
 @media (max-width: 760px) {
-  .nav-toggle {
+  .nav-toggle.btn {
     display: inline-flex;
   }
   .site-nav {

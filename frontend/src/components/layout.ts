@@ -5,7 +5,7 @@
  * `<div id="site-footer"></div>` placeholders; `mountPublicLayout()` fills
  * them so the markup stays in HTML while the behaviour lives in TypeScript.
  */
-import { el, observeReveals, qs } from '@/utils/dom';
+import { el, markRevealSections, observeReveals, qs } from '@/utils/dom';
 import { icon } from '@/components/icons';
 import { api } from '@/api/client';
 import { isSafeUrl } from '@/utils/format';
@@ -259,6 +259,7 @@ export function mountPublicLayout(): void {
   if (headerSlot) headerSlot.appendChild(renderHeader());
   if (footerSlot) footerSlot.appendChild(renderFooter());
 
-  // Covers `.reveal` written into the page markup (as opposed to async data).
+  // Animate the static furniture on scroll, then observe everything.
+  markRevealSections();
   observeReveals();
 }

@@ -110,12 +110,12 @@ function mountFeaturedProjects(): void {
 
   mountAsync<Project[]>(
     host,
-    () => api.getProjects({ featured: true, per_page: 3, sort: 'recent' }).then((r) => r.data),
+    () => api.getProjects({ featured: true, per_page: 4, sort: 'recent' }).then((r) => r.data),
     (projects) => {
       if (projects.length === 0) {
         return emptyState(t('home.emptyFeatured'), t('home.emptyFeaturedHint'));
       }
-      const grid = el('div', { class: 'grid grid--3' });
+      const grid = el('div', { class: 'grid grid--auto' });
       projects.forEach((project, index) => {
         const wrapper = el('div', { class: 'reveal', style: `transition-delay:${index * 60}ms` });
         wrapper.appendChild(projectCard(project));
@@ -123,7 +123,7 @@ function mountFeaturedProjects(): void {
       });
       return grid;
     },
-    { loading: () => el('div', { class: 'grid grid--3' }, [0, 1, 2].map(() => projectCardSkeleton())) },
+    { loading: () => el('div', { class: 'grid grid--auto' }, [0, 1, 2, 3].map(() => projectCardSkeleton())) },
   );
 }
 

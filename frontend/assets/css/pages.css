@@ -45,7 +45,7 @@
 }
 .hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
   gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
 }
@@ -65,9 +65,12 @@
 .hero__name { font-family: var(--font-mono); color: var(--fg-muted); font-size: var(--text-sm); letter-spacing: 0.04em; }
 .hero__title {
   margin-block: var(--sp-4) var(--sp-5);
-  max-width: 15ch;
-  font-size: clamp(2.7rem, 1.3rem + 6.4vw, 6rem);
-  letter-spacing: -0.035em;
+  max-width: 26ch;
+  /* Sized to the left column so each statement stays on its own line instead
+     of shattering into single words. */
+  font-size: clamp(2rem, 1.1rem + 3vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
 }
 .hero__title > span { display: block; }
 .hero__title em {
