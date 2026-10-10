@@ -9,6 +9,15 @@ import (
 	"github.com/zharrDev/portfolio/backend/internal/service"
 )
 
+// localeOf reads the requested locale from the `locale` query parameter.
+//
+// It deliberately ignores Accept-Language: the frontend always sends the
+// parameter explicitly, and keeping the default at Indonesian makes responses
+// predictable and cacheable instead of varying per visitor's browser.
+func localeOf(r *http.Request) string {
+	return service.NormalizeLocale(r.URL.Query().Get("locale"))
+}
+
 // GetProfile returns the owner profile.
 func (h *Handler) GetProfile(w http.ResponseWriter, r *http.Request) {
 	profile, err := h.repo.GetProfile(r.Context())
@@ -16,6 +25,7 @@ func (h *Handler) GetProfile(w http.ResponseWriter, r *http.Request) {
 		handleError(w, h.logger, err)
 		return
 	}
+	service.Localise(localeOf(r), &profile)
 	writeJSON(w, http.StatusOK, profile)
 }
 
@@ -26,6 +36,7 @@ func (h *Handler) ListEducation(w http.ResponseWriter, r *http.Request) {
 		handleError(w, h.logger, err)
 		return
 	}
+	service.Localise(localeOf(r), items)
 	writeJSON(w, http.StatusOK, items)
 }
 
@@ -36,6 +47,7 @@ func (h *Handler) ListSkills(w http.ResponseWriter, r *http.Request) {
 		handleError(w, h.logger, err)
 		return
 	}
+	service.Localise(localeOf(r), items)
 	writeJSON(w, http.StatusOK, items)
 }
 
@@ -46,6 +58,7 @@ func (h *Handler) ListExperience(w http.ResponseWriter, r *http.Request) {
 		handleError(w, h.logger, err)
 		return
 	}
+	service.Localise(localeOf(r), items)
 	writeJSON(w, http.StatusOK, items)
 }
 
@@ -56,6 +69,7 @@ func (h *Handler) ListCertificates(w http.ResponseWriter, r *http.Request) {
 		handleError(w, h.logger, err)
 		return
 	}
+	service.Localise(localeOf(r), items)
 	writeJSON(w, http.StatusOK, items)
 }
 
@@ -86,6 +100,7 @@ func (h *Handler) ListProjects(w http.ResponseWriter, r *http.Request) {
 		handleError(w, h.logger, err)
 		return
 	}
+	service.Localise(localeOf(r), items)
 	writeJSON(w, http.StatusOK, items)
 }
 
@@ -105,6 +120,7 @@ func (h *Handler) GetProject(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, "not_found", "Proyek tidak ditemukan.")
 		return
 	}
+	service.Localise(localeOf(r), &project)
 	writeJSON(w, http.StatusOK, project)
 }
 

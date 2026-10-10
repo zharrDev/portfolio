@@ -13,9 +13,9 @@ import (
 
 func (r *Repository) ListExperiences(ctx context.Context) ([]model.Experience, error) {
 	rows, err := r.pool.Query(ctx, `
-		SELECT id, organization, role, type,
+		SELECT id, organization, role, role_en, type,
 		       to_char(start_date, 'YYYY-MM-DD'), to_char(end_date, 'YYYY-MM-DD'),
-		       description, sort_order, created_at, updated_at
+		       description, description_en, sort_order, created_at, updated_at
 		FROM experiences ORDER BY sort_order ASC, start_date DESC NULLS LAST, id ASC`)
 	if err != nil {
 		return nil, err
@@ -25,8 +25,8 @@ func (r *Repository) ListExperiences(ctx context.Context) ([]model.Experience, e
 	list := make([]model.Experience, 0)
 	for rows.Next() {
 		var e model.Experience
-		if err := rows.Scan(&e.ID, &e.Organization, &e.Role, &e.Type, &e.StartDate, &e.EndDate,
-			&e.Description, &e.SortOrder, &e.CreatedAt, &e.UpdatedAt); err != nil {
+		if err := rows.Scan(&e.ID, &e.Organization, &e.Role, &e.RoleEN, &e.Type, &e.StartDate, &e.EndDate,
+			&e.Description, &e.DescriptionEN, &e.SortOrder, &e.CreatedAt, &e.UpdatedAt); err != nil {
 			return nil, err
 		}
 		list = append(list, e)
@@ -36,19 +36,21 @@ func (r *Repository) ListExperiences(ctx context.Context) ([]model.Experience, e
 
 func (r *Repository) CreateExperience(ctx context.Context, e model.Experience) (model.Experience, error) {
 	err := r.pool.QueryRow(ctx, `
-		INSERT INTO experiences (organization, role, type, start_date, end_date, description, sort_order)
-		VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id, created_at, updated_at`,
-		e.Organization, e.Role, e.Type, e.StartDate, e.EndDate, e.Description, e.SortOrder,
+		INSERT INTO experiences (organization, role, role_en, type, start_date, end_date, description, description_en, sort_order)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id, created_at, updated_at`,
+		e.Organization, e.Role, e.RoleEN, e.Type, e.StartDate, e.EndDate,
+		e.Description, e.DescriptionEN, e.SortOrder,
 	).Scan(&e.ID, &e.CreatedAt, &e.UpdatedAt)
 	return e, err
 }
 
 func (r *Repository) UpdateExperience(ctx context.Context, e model.Experience) (model.Experience, error) {
 	err := r.pool.QueryRow(ctx, `
-		UPDATE experiences SET organization=$2, role=$3, type=$4, start_date=$5, end_date=$6,
-			description=$7, sort_order=$8, updated_at=now()
+		UPDATE experiences SET organization=$2, role=$3, role_en=$4, type=$5, start_date=$6, end_date=$7,
+			description=$8, description_en=$9, sort_order=$10, updated_at=now()
 		WHERE id=$1 RETURNING created_at, updated_at`,
-		e.ID, e.Organization, e.Role, e.Type, e.StartDate, e.EndDate, e.Description, e.SortOrder,
+		e.ID, e.Organization, e.Role, e.RoleEN, e.Type, e.StartDate, e.EndDate,
+		e.Description, e.DescriptionEN, e.SortOrder,
 	).Scan(&e.CreatedAt, &e.UpdatedAt)
 	return e, mapErr(err)
 }
@@ -70,7 +72,7 @@ func (r *Repository) DeleteExperience(ctx context.Context, id int64) error {
 
 func (r *Repository) ListCertificates(ctx context.Context) ([]model.Certificate, error) {
 	rows, err := r.pool.Query(ctx, `
-		SELECT id, name, issuer, to_char(issued_date, 'YYYY-MM-DD'), credential_url,
+		SELECT id, name, name_en, issuer, to_char(issued_date, 'YYYY-MM-DD'), credential_url,
 		       sort_order, created_at, updated_at
 		FROM certificates ORDER BY sort_order ASC, issued_date DESC NULLS LAST, id ASC`)
 	if err != nil {
@@ -81,7 +83,7 @@ func (r *Repository) ListCertificates(ctx context.Context) ([]model.Certificate,
 	list := make([]model.Certificate, 0)
 	for rows.Next() {
 		var c model.Certificate
-		if err := rows.Scan(&c.ID, &c.Name, &c.Issuer, &c.IssuedDate, &c.CredentialURL,
+		if err := rows.Scan(&c.ID, &c.Name, &c.NameEN, &c.Issuer, &c.IssuedDate, &c.CredentialURL,
 			&c.SortOrder, &c.CreatedAt, &c.UpdatedAt); err != nil {
 			return nil, err
 		}
@@ -92,18 +94,18 @@ func (r *Repository) ListCertificates(ctx context.Context) ([]model.Certificate,
 
 func (r *Repository) CreateCertificate(ctx context.Context, c model.Certificate) (model.Certificate, error) {
 	err := r.pool.QueryRow(ctx, `
-		INSERT INTO certificates (name, issuer, issued_date, credential_url, sort_order)
-		VALUES ($1,$2,$3,$4,$5) RETURNING id, created_at, updated_at`,
-		c.Name, c.Issuer, c.IssuedDate, c.CredentialURL, c.SortOrder,
+		INSERT INTO certificates (name, name_en, issuer, issued_date, credential_url, sort_order)
+		VALUES ($1,$2,$3,$4,$5,$6) RETURNING id, created_at, updated_at`,
+		c.Name, c.NameEN, c.Issuer, c.IssuedDate, c.CredentialURL, c.SortOrder,
 	).Scan(&c.ID, &c.CreatedAt, &c.UpdatedAt)
 	return c, err
 }
 
 func (r *Repository) UpdateCertificate(ctx context.Context, c model.Certificate) (model.Certificate, error) {
 	err := r.pool.QueryRow(ctx, `
-		UPDATE certificates SET name=$2, issuer=$3, issued_date=$4, credential_url=$5, sort_order=$6, updated_at=now()
+		UPDATE certificates SET name=$2, name_en=$3, issuer=$4, issued_date=$5, credential_url=$6, sort_order=$7, updated_at=now()
 		WHERE id=$1 RETURNING created_at, updated_at`,
-		c.ID, c.Name, c.Issuer, c.IssuedDate, c.CredentialURL, c.SortOrder,
+		c.ID, c.Name, c.NameEN, c.Issuer, c.IssuedDate, c.CredentialURL, c.SortOrder,
 	).Scan(&c.CreatedAt, &c.UpdatedAt)
 	return c, mapErr(err)
 }

@@ -43,16 +43,18 @@ func mapErr(err error) error {
 /* Profile                                                             */
 /* ------------------------------------------------------------------ */
 
-const profileColumns = `id, full_name, nickname, brand, headline, subheadline, bio, about,
-	avatar_url, location, email, phone, university, major, previous_school, previous_major,
-	current_focus, availability, updated_at`
+const profileColumns = `id, full_name, nickname, brand, headline, headline_en, subheadline, subheadline_en,
+	bio, bio_en, about, about_en, avatar_url, location, email, phone, university, major,
+	previous_school, previous_major, current_focus, current_focus_en, availability, availability_en, updated_at`
 
 func scanProfile(row pgx.Row) (model.Profile, error) {
 	var p model.Profile
 	err := row.Scan(
-		&p.ID, &p.FullName, &p.Nickname, &p.Brand, &p.Headline, &p.Subheadline, &p.Bio, &p.About,
-		&p.AvatarURL, &p.Location, &p.Email, &p.Phone, &p.University, &p.Major, &p.PreviousSchool,
-		&p.PreviousMajor, &p.CurrentFocus, &p.Availability, &p.UpdatedAt,
+		&p.ID, &p.FullName, &p.Nickname, &p.Brand, &p.Headline, &p.HeadlineEN,
+		&p.Subheadline, &p.SubheadlineEN, &p.Bio, &p.BioEN, &p.About, &p.AboutEN,
+		&p.AvatarURL, &p.Location, &p.Email, &p.Phone, &p.University, &p.Major,
+		&p.PreviousSchool, &p.PreviousMajor, &p.CurrentFocus, &p.CurrentFocusEN,
+		&p.Availability, &p.AvailabilityEN, &p.UpdatedAt,
 	)
 	return p, err
 }
@@ -68,15 +70,20 @@ func (r *Repository) GetProfile(ctx context.Context) (model.Profile, error) {
 func (r *Repository) UpdateProfile(ctx context.Context, p model.Profile) (model.Profile, error) {
 	row := r.pool.QueryRow(ctx, `
 		UPDATE profiles SET
-			full_name = $2, nickname = $3, brand = $4, headline = $5, subheadline = $6,
-			bio = $7, about = $8, avatar_url = $9, location = $10, email = $11, phone = $12,
-			university = $13, major = $14, previous_school = $15, previous_major = $16,
-			current_focus = $17, availability = $18, updated_at = now()
+			full_name = $2, nickname = $3, brand = $4,
+			headline = $5, headline_en = $6, subheadline = $7, subheadline_en = $8,
+			bio = $9, bio_en = $10, about = $11, about_en = $12, avatar_url = $13,
+			location = $14, email = $15, phone = $16, university = $17, major = $18,
+			previous_school = $19, previous_major = $20, current_focus = $21,
+			current_focus_en = $22, availability = $23, availability_en = $24, updated_at = now()
 		WHERE id = $1
 		RETURNING `+profileColumns,
-		p.ID, p.FullName, p.Nickname, p.Brand, p.Headline, p.Subheadline, p.Bio, p.About,
-		p.AvatarURL, p.Location, p.Email, p.Phone, p.University, p.Major, p.PreviousSchool,
-		p.PreviousMajor, p.CurrentFocus, p.Availability,
+		p.ID, p.FullName, p.Nickname, p.Brand,
+		p.Headline, p.HeadlineEN, p.Subheadline, p.SubheadlineEN,
+		p.Bio, p.BioEN, p.About, p.AboutEN, p.AvatarURL,
+		p.Location, p.Email, p.Phone, p.University, p.Major,
+		p.PreviousSchool, p.PreviousMajor, p.CurrentFocus, p.CurrentFocusEN,
+		p.Availability, p.AvailabilityEN,
 	)
 	updated, err := scanProfile(row)
 	return updated, mapErr(err)
@@ -89,7 +96,8 @@ func (r *Repository) UpdateProfile(ctx context.Context, p model.Profile) (model.
 // ListEducations returns education entries ordered by sort_order then recency.
 func (r *Repository) ListEducations(ctx context.Context) ([]model.Education, error) {
 	rows, err := r.pool.Query(ctx, `
-		SELECT id, institution, degree, major, start_year, end_year, description, sort_order, created_at, updated_at
+		SELECT id, institution, degree, degree_en, major, major_en, start_year, end_year,
+		       description, description_en, sort_order, created_at, updated_at
 		FROM educations ORDER BY sort_order ASC, end_year DESC NULLS FIRST, id ASC`)
 	if err != nil {
 		return nil, err
@@ -99,8 +107,9 @@ func (r *Repository) ListEducations(ctx context.Context) ([]model.Education, err
 	list := make([]model.Education, 0)
 	for rows.Next() {
 		var e model.Education
-		if err := rows.Scan(&e.ID, &e.Institution, &e.Degree, &e.Major, &e.StartYear, &e.EndYear,
-			&e.Description, &e.SortOrder, &e.CreatedAt, &e.UpdatedAt); err != nil {
+		if err := rows.Scan(&e.ID, &e.Institution, &e.Degree, &e.DegreeEN, &e.Major, &e.MajorEN,
+			&e.StartYear, &e.EndYear, &e.Description, &e.DescriptionEN, &e.SortOrder,
+			&e.CreatedAt, &e.UpdatedAt); err != nil {
 			return nil, err
 		}
 		list = append(list, e)
@@ -111,10 +120,12 @@ func (r *Repository) ListEducations(ctx context.Context) ([]model.Education, err
 // CreateEducation inserts a new education row.
 func (r *Repository) CreateEducation(ctx context.Context, e model.Education) (model.Education, error) {
 	err := r.pool.QueryRow(ctx, `
-		INSERT INTO educations (institution, degree, major, start_year, end_year, description, sort_order)
-		VALUES ($1,$2,$3,$4,$5,$6,$7)
+		INSERT INTO educations (institution, degree, degree_en, major, major_en, start_year, end_year,
+		                        description, description_en, sort_order)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
 		RETURNING id, created_at, updated_at`,
-		e.Institution, e.Degree, e.Major, e.StartYear, e.EndYear, e.Description, e.SortOrder,
+		e.Institution, e.Degree, e.DegreeEN, e.Major, e.MajorEN, e.StartYear, e.EndYear,
+		e.Description, e.DescriptionEN, e.SortOrder,
 	).Scan(&e.ID, &e.CreatedAt, &e.UpdatedAt)
 	return e, err
 }
@@ -122,11 +133,12 @@ func (r *Repository) CreateEducation(ctx context.Context, e model.Education) (mo
 // UpdateEducation updates an existing education row.
 func (r *Repository) UpdateEducation(ctx context.Context, e model.Education) (model.Education, error) {
 	err := r.pool.QueryRow(ctx, `
-		UPDATE educations SET institution=$2, degree=$3, major=$4, start_year=$5, end_year=$6,
-			description=$7, sort_order=$8, updated_at=now()
+		UPDATE educations SET institution=$2, degree=$3, degree_en=$4, major=$5, major_en=$6,
+			start_year=$7, end_year=$8, description=$9, description_en=$10, sort_order=$11, updated_at=now()
 		WHERE id=$1
 		RETURNING created_at, updated_at`,
-		e.ID, e.Institution, e.Degree, e.Major, e.StartYear, e.EndYear, e.Description, e.SortOrder,
+		e.ID, e.Institution, e.Degree, e.DegreeEN, e.Major, e.MajorEN, e.StartYear, e.EndYear,
+		e.Description, e.DescriptionEN, e.SortOrder,
 	).Scan(&e.CreatedAt, &e.UpdatedAt)
 	return e, mapErr(err)
 }
@@ -150,7 +162,7 @@ func (r *Repository) DeleteEducation(ctx context.Context, id int64) error {
 // ListSkills returns skills ordered by category then sort_order.
 func (r *Repository) ListSkills(ctx context.Context) ([]model.Skill, error) {
 	rows, err := r.pool.Query(ctx, `
-		SELECT id, name, category, note, sort_order, created_at, updated_at
+		SELECT id, name, name_en, category, note, note_en, sort_order, created_at, updated_at
 		FROM skills ORDER BY category ASC, sort_order ASC, name ASC`)
 	if err != nil {
 		return nil, err
@@ -160,7 +172,8 @@ func (r *Repository) ListSkills(ctx context.Context) ([]model.Skill, error) {
 	list := make([]model.Skill, 0)
 	for rows.Next() {
 		var s model.Skill
-		if err := rows.Scan(&s.ID, &s.Name, &s.Category, &s.Note, &s.SortOrder, &s.CreatedAt, &s.UpdatedAt); err != nil {
+		if err := rows.Scan(&s.ID, &s.Name, &s.NameEN, &s.Category, &s.Note, &s.NoteEN,
+			&s.SortOrder, &s.CreatedAt, &s.UpdatedAt); err != nil {
 			return nil, err
 		}
 		list = append(list, s)
@@ -171,9 +184,9 @@ func (r *Repository) ListSkills(ctx context.Context) ([]model.Skill, error) {
 // CreateSkill inserts a new skill.
 func (r *Repository) CreateSkill(ctx context.Context, s model.Skill) (model.Skill, error) {
 	err := r.pool.QueryRow(ctx, `
-		INSERT INTO skills (name, category, note, sort_order) VALUES ($1,$2,$3,$4)
+		INSERT INTO skills (name, name_en, category, note, note_en, sort_order) VALUES ($1,$2,$3,$4,$5,$6)
 		RETURNING id, created_at, updated_at`,
-		s.Name, s.Category, s.Note, s.SortOrder,
+		s.Name, s.NameEN, s.Category, s.Note, s.NoteEN, s.SortOrder,
 	).Scan(&s.ID, &s.CreatedAt, &s.UpdatedAt)
 	return s, err
 }
@@ -181,9 +194,9 @@ func (r *Repository) CreateSkill(ctx context.Context, s model.Skill) (model.Skil
 // UpdateSkill updates a skill row.
 func (r *Repository) UpdateSkill(ctx context.Context, s model.Skill) (model.Skill, error) {
 	err := r.pool.QueryRow(ctx, `
-		UPDATE skills SET name=$2, category=$3, note=$4, sort_order=$5, updated_at=now()
+		UPDATE skills SET name=$2, name_en=$3, category=$4, note=$5, note_en=$6, sort_order=$7, updated_at=now()
 		WHERE id=$1 RETURNING created_at, updated_at`,
-		s.ID, s.Name, s.Category, s.Note, s.SortOrder,
+		s.ID, s.Name, s.NameEN, s.Category, s.Note, s.NoteEN, s.SortOrder,
 	).Scan(&s.CreatedAt, &s.UpdatedAt)
 	return s, mapErr(err)
 }
@@ -217,17 +230,21 @@ type ProjectFilter struct {
 	Offset        int
 }
 
-const projectColumns = `id, slug, title, short_description, description, category, repository_url,
-	live_demo_url, readme_url, cover_image, status, is_featured, published, problem, goals,
-	main_features, challenges, learnings, architecture, year, language, stars, forks,
+const projectColumns = `id, slug, title, title_en, short_description, short_description_en,
+	description, description_en, category, repository_url,
+	live_demo_url, readme_url, cover_image, status, is_featured, published, problem, problem_en,
+	goals, goals_en, main_features, main_features_en, challenges, challenges_en,
+	learnings, learnings_en, architecture, year, language, stars, forks,
 	github_updated_at, source, sort_order, published_at, created_at, updated_at`
 
 func scanProject(row pgx.Row) (model.Project, error) {
 	var p model.Project
 	err := row.Scan(
-		&p.ID, &p.Slug, &p.Title, &p.ShortDescription, &p.Description, &p.Category, &p.RepositoryURL,
+		&p.ID, &p.Slug, &p.Title, &p.TitleEN, &p.ShortDescription, &p.ShortDescriptionEN,
+		&p.Description, &p.DescriptionEN, &p.Category, &p.RepositoryURL,
 		&p.LiveDemoURL, &p.ReadmeURL, &p.CoverImage, &p.Status, &p.IsFeatured, &p.Published,
-		&p.Problem, &p.Goals, &p.MainFeatures, &p.Challenges, &p.Learnings, &p.Architecture,
+		&p.Problem, &p.ProblemEN, &p.Goals, &p.GoalsEN, &p.MainFeatures, &p.MainFeaturesEN,
+		&p.Challenges, &p.ChallengesEN, &p.Learnings, &p.LearningsEN, &p.Architecture,
 		&p.Year, &p.Language, &p.Stars, &p.Forks, &p.GitHubUpdatedAt, &p.Source, &p.SortOrder,
 		&p.PublishedAt, &p.CreatedAt, &p.UpdatedAt,
 	)

@@ -30,14 +30,19 @@ func (r *Repository) CreateProject(ctx context.Context, in ProjectInput) (model.
 		INSERT INTO projects (
 			slug, title, short_description, description, category, repository_url, live_demo_url,
 			readme_url, cover_image, status, is_featured, published, problem, goals, main_features,
-			challenges, learnings, architecture, year, language, stars, forks, source, sort_order, published_at
+			challenges, learnings, architecture, year, language, stars, forks, source, sort_order,
+			title_en, short_description_en, description_en, problem_en, goals_en,
+			main_features_en, challenges_en, learnings_en
 		) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,
+			$25,$26,$27,$28,$29,$30,$31,$32,
 			CASE WHEN $12 THEN now() ELSE NULL END)
 		RETURNING id, created_at, updated_at, published_at`,
 		p.Slug, p.Title, p.ShortDescription, p.Description, p.Category, p.RepositoryURL, p.LiveDemoURL,
 		p.ReadmeURL, p.CoverImage, p.Status, p.IsFeatured, p.Published, p.Problem, p.Goals, p.MainFeatures,
 		p.Challenges, p.Learnings, p.Architecture, p.Year, p.Language, p.Stars, p.Forks, defaultSource(p.Source),
 		p.SortOrder,
+		p.TitleEN, p.ShortDescriptionEN, p.DescriptionEN, p.ProblemEN, p.GoalsEN,
+		p.MainFeaturesEN, p.ChallengesEN, p.LearningsEN,
 	).Scan(&p.ID, &p.CreatedAt, &p.UpdatedAt, &p.PublishedAt)
 	if err != nil {
 		return p, err
@@ -70,6 +75,8 @@ func (r *Repository) UpdateProject(ctx context.Context, in ProjectInput) (model.
 			live_demo_url=$8, readme_url=$9, cover_image=$10, status=$11, is_featured=$12, published=$13,
 			problem=$14, goals=$15, main_features=$16, challenges=$17, learnings=$18, architecture=$19,
 			year=$20, language=$21, stars=$22, forks=$23, sort_order=$24,
+			title_en=$25, short_description_en=$26, description_en=$27, problem_en=$28,
+			goals_en=$29, main_features_en=$30, challenges_en=$31, learnings_en=$32,
 			published_at = CASE WHEN $13 THEN COALESCE(published_at, now()) ELSE NULL END,
 			updated_at = now()
 		WHERE id=$1`,
@@ -77,6 +84,8 @@ func (r *Repository) UpdateProject(ctx context.Context, in ProjectInput) (model.
 		p.LiveDemoURL, p.ReadmeURL, p.CoverImage, p.Status, p.IsFeatured, p.Published,
 		p.Problem, p.Goals, p.MainFeatures, p.Challenges, p.Learnings, p.Architecture,
 		p.Year, p.Language, p.Stars, p.Forks, p.SortOrder,
+		p.TitleEN, p.ShortDescriptionEN, p.DescriptionEN, p.ProblemEN,
+		p.GoalsEN, p.MainFeaturesEN, p.ChallengesEN, p.LearningsEN,
 	)
 	if err != nil {
 		return p, err

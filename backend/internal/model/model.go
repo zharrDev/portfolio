@@ -6,15 +6,23 @@ package model
 import "time"
 
 // Profile is the single owner profile record.
+//
+// Fields tagged `i18n` name the optional English counterpart. When a request
+// asks for the English locale, the service copies the English value over the
+// base field, but only when the English cell is actually filled in.
 type Profile struct {
 	ID             int64     `json:"id"`
 	FullName       string    `json:"full_name"`
 	Nickname       string    `json:"nickname"`
 	Brand          string    `json:"brand"`
-	Headline       string    `json:"headline"`
-	Subheadline    *string   `json:"subheadline"`
-	Bio            *string   `json:"bio"`
-	About          *string   `json:"about"`
+	Headline       string    `json:"headline" i18n:"HeadlineEN"`
+	HeadlineEN     *string   `json:"headline_en"`
+	Subheadline    *string   `json:"subheadline" i18n:"SubheadlineEN"`
+	SubheadlineEN  *string   `json:"subheadline_en"`
+	Bio            *string   `json:"bio" i18n:"BioEN"`
+	BioEN          *string   `json:"bio_en"`
+	About          *string   `json:"about" i18n:"AboutEN"`
+	AboutEN        *string   `json:"about_en"`
 	AvatarURL      *string   `json:"avatar_url"`
 	Location       *string   `json:"location"`
 	Email          *string   `json:"email"`
@@ -23,31 +31,38 @@ type Profile struct {
 	Major          *string   `json:"major"`
 	PreviousSchool *string   `json:"previous_school"`
 	PreviousMajor  *string   `json:"previous_major"`
-	CurrentFocus   *string   `json:"current_focus"`
-	Availability   *string   `json:"availability"`
+	CurrentFocus   *string   `json:"current_focus" i18n:"CurrentFocusEN"`
+	CurrentFocusEN *string   `json:"current_focus_en"`
+	Availability   *string   `json:"availability" i18n:"AvailabilityEN"`
+	AvailabilityEN *string   `json:"availability_en"`
 	UpdatedAt      time.Time `json:"updated_at"`
 }
 
 // Education is a single education history entry.
 type Education struct {
-	ID          int64     `json:"id"`
-	Institution string    `json:"institution"`
-	Degree      *string   `json:"degree"`
-	Major       *string   `json:"major"`
-	StartYear   *int      `json:"start_year"`
-	EndYear     *int      `json:"end_year"`
-	Description *string   `json:"description"`
-	SortOrder   int       `json:"sort_order"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	ID            int64     `json:"id"`
+	Institution   string    `json:"institution"`
+	Degree        *string   `json:"degree" i18n:"DegreeEN"`
+	DegreeEN      *string   `json:"degree_en"`
+	Major         *string   `json:"major" i18n:"MajorEN"`
+	MajorEN       *string   `json:"major_en"`
+	StartYear     *int      `json:"start_year"`
+	EndYear       *int      `json:"end_year"`
+	Description   *string   `json:"description" i18n:"DescriptionEN"`
+	DescriptionEN *string   `json:"description_en"`
+	SortOrder     int       `json:"sort_order"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
 }
 
 // Skill belongs to one category and is shown as a chip in the UI.
 type Skill struct {
 	ID        int64     `json:"id"`
-	Name      string    `json:"name"`
+	Name      string    `json:"name" i18n:"NameEN"`
+	NameEN    *string   `json:"name_en"`
 	Category  string    `json:"category"`
-	Note      *string   `json:"note"`
+	Note      *string   `json:"note" i18n:"NoteEN"`
+	NoteEN    *string   `json:"note_en"`
 	SortOrder int       `json:"sort_order"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -70,57 +85,68 @@ type ProjectImage struct {
 
 // Project is the central portfolio entity.
 type Project struct {
-	ID               int64          `json:"id"`
-	Slug             string         `json:"slug"`
-	Title            string         `json:"title"`
-	ShortDescription string         `json:"short_description"`
-	Description      *string        `json:"description"`
-	Category         *string        `json:"category"`
-	RepositoryURL    *string        `json:"repository_url"`
-	LiveDemoURL      *string        `json:"live_demo_url"`
-	ReadmeURL        *string        `json:"readme_url"`
-	CoverImage       *string        `json:"cover_image"`
-	Status           string         `json:"status"`
-	IsFeatured       bool           `json:"is_featured"`
-	Published        bool           `json:"published"`
-	Problem          *string        `json:"problem"`
-	Goals            *string        `json:"goals"`
-	MainFeatures     *string        `json:"main_features"`
-	Challenges       *string        `json:"challenges"`
-	Learnings        *string        `json:"learnings"`
-	Architecture     *string        `json:"architecture"`
-	Year             *int           `json:"year"`
-	Language         *string        `json:"language"`
-	Stars            *int           `json:"stars"`
-	Forks            *int           `json:"forks"`
-	GitHubUpdatedAt  *time.Time     `json:"github_updated_at"`
-	Source           string         `json:"source"`
-	SortOrder        int            `json:"sort_order"`
-	Technologies     []Technology   `json:"technologies"`
-	Images           []ProjectImage `json:"images"`
-	PublishedAt      *time.Time     `json:"published_at"`
-	CreatedAt        time.Time      `json:"created_at"`
-	UpdatedAt        time.Time      `json:"updated_at"`
+	ID                 int64          `json:"id"`
+	Slug               string         `json:"slug"`
+	Title              string         `json:"title" i18n:"TitleEN"`
+	TitleEN            *string        `json:"title_en"`
+	ShortDescription   string         `json:"short_description" i18n:"ShortDescriptionEN"`
+	ShortDescriptionEN *string        `json:"short_description_en"`
+	Description        *string        `json:"description" i18n:"DescriptionEN"`
+	DescriptionEN      *string        `json:"description_en"`
+	Category           *string        `json:"category"`
+	RepositoryURL      *string        `json:"repository_url"`
+	LiveDemoURL        *string        `json:"live_demo_url"`
+	ReadmeURL          *string        `json:"readme_url"`
+	CoverImage         *string        `json:"cover_image"`
+	Status             string         `json:"status"`
+	IsFeatured         bool           `json:"is_featured"`
+	Published          bool           `json:"published"`
+	Problem            *string        `json:"problem" i18n:"ProblemEN"`
+	ProblemEN          *string        `json:"problem_en"`
+	Goals              *string        `json:"goals" i18n:"GoalsEN"`
+	GoalsEN            *string        `json:"goals_en"`
+	MainFeatures       *string        `json:"main_features" i18n:"MainFeaturesEN"`
+	MainFeaturesEN     *string        `json:"main_features_en"`
+	Challenges         *string        `json:"challenges" i18n:"ChallengesEN"`
+	ChallengesEN       *string        `json:"challenges_en"`
+	Learnings          *string        `json:"learnings" i18n:"LearningsEN"`
+	LearningsEN        *string        `json:"learnings_en"`
+	Architecture       *string        `json:"architecture"`
+	Year               *int           `json:"year"`
+	Language           *string        `json:"language"`
+	Stars              *int           `json:"stars"`
+	Forks              *int           `json:"forks"`
+	GitHubUpdatedAt    *time.Time     `json:"github_updated_at"`
+	Source             string         `json:"source"`
+	SortOrder          int            `json:"sort_order"`
+	Technologies       []Technology   `json:"technologies"`
+	Images             []ProjectImage `json:"images"`
+	PublishedAt        *time.Time     `json:"published_at"`
+	CreatedAt          time.Time      `json:"created_at"`
+	UpdatedAt          time.Time      `json:"updated_at"`
 }
 
 // Experience is a work/organisation entry.
 type Experience struct {
-	ID           int64     `json:"id"`
-	Organization string    `json:"organization"`
-	Role         string    `json:"role"`
-	Type         *string   `json:"type"`
-	StartDate    *string   `json:"start_date"`
-	EndDate      *string   `json:"end_date"`
-	Description  *string   `json:"description"`
-	SortOrder    int       `json:"sort_order"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	ID            int64     `json:"id"`
+	Organization  string    `json:"organization"`
+	Role          string    `json:"role" i18n:"RoleEN"`
+	RoleEN        *string   `json:"role_en"`
+	Type          *string   `json:"type"`
+	StartDate     *string   `json:"start_date"`
+	EndDate       *string   `json:"end_date"`
+	Description   *string   `json:"description" i18n:"DescriptionEN"`
+	DescriptionEN *string   `json:"description_en"`
+	SortOrder     int       `json:"sort_order"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
 }
 
 // Certificate is a certificate/course/achievement entry.
 type Certificate struct {
 	ID            int64     `json:"id"`
-	Name          string    `json:"name"`
+	Name          string    `json:"name" i18n:"NameEN"`
+	NameEN        *string   `json:"name_en"`
 	Issuer        *string   `json:"issuer"`
 	IssuedDate    *string   `json:"issued_date"`
 	CredentialURL *string   `json:"credential_url"`
